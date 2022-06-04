@@ -41,6 +41,11 @@ USEMODULE += ps
 ### Um alle verfuegbaren Sensoren einzubeziehen und automatisch zu initialisieren
 USEMODULE += saul_default
 
+### Fuer Resurce Directory ein Modul ###
+USEMODULE += cord_ep_standalone
+
+
+
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:
@@ -88,3 +93,14 @@ CFLAGS += -DCONFIG_GCOAP_PDU_BUF_SIZE=1024
 ##Channel?
 CFLAGS += -DCONFIG_IEEE802154_DEFAULT_CHANNEL=22
 CFLAGS += -DCONFIG_GNRC_IPV6_NIB_SLAAC=1
+
+
+###Fuer Resource Directory###
+# For debugging and demonstration purposes, we limit the lifetime to 60s
+# Set CONFIG_CORD_LT only if not being set via Kconfig
+ifndef CONFIG_CORD_LT
+#Lebensdauer
+CFLAGS += -DCONFIG_CORD_LT=60
+#Endpunktname des Knotens
+#CFLAGS += "-DCONFIG_CORD_EP=EP_Test_Name
+endif

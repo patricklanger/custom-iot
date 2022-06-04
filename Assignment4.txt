@@ -11,6 +11,8 @@ Werkzeuge: git, make, RIOT, aiocoap
 
 (a) Richten Sie ein CoRE Resource Directory (RD) auf dem Raspberry Pi ein (siehe aiocoap-Dokumentation).
 
+- Nächster Schritt:
+Fragen, ob kopieren von Client und Server (auf https://aiocoap.readthedocs.io/en/latest/examples.html) reicht zum einrichten.
 
 
 
@@ -18,6 +20,7 @@ Werkzeuge: git, make, RIOT, aiocoap
 
 (b) Verwenden Sie die Beispiel-Firmware examples/cord ep, um einen IoT-Knoten im RD zu registrieren.
 
+- Erledigt: Im custom-IoT drin (mit Kommentaren)
 
 
 
@@ -39,16 +42,11 @@ Werkzeuge: git, make, RIOT, aiocoap
 
 
 (b) Diskutieren Sie mögliche Lösungen, damit der IoT-Knoten den RD automatisch findet.
-
-
-
 i. Implementieren Sie einen solchen Mechanismus, so dass Ihr IoT-Knoten die IP des RDs nicht vorher kennen muss.
 
 
 
 (c) Implementieren Sie ein Client-Programm in Python, das den RD abfragt, um IoT-Knoten zu finden.
-
-
 i. Fügen Sie eine Funktion hinzu, die automatisch alle Sensoren jedes gefundenen Geräts ausliest.
 
 
@@ -69,4 +67,4 @@ i. Finde anhand der Sensorwerte heraus, ob der IoT-Knoten nach oben oder unten z
 
 
 
-ii. Wenn mindestens ein Knoten nach unten zeigt, sollte die Anwendung alle LEDs aller Knoten ausschalten.
+ii. Wenn mindestens ein Device nach unten hält, sollte die Anwendung alle LEDs aller Devices ausschalten.
