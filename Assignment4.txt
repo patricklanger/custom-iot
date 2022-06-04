@@ -1,0 +1,72 @@
+1. IoT-Geräte entdecken
+Aufgabe 04 SS 2022 Abgabetermin: Juni 15, 2022
+ IoT-Knoten sind oft sehr eingeschränkte batteriebetriebene mobile Geräte.
+ Der Einsatz von Erkennungsprotokollen, die das gesamte Netzwerk übertragen,
+ kann daher unerwünscht sein, da sie die Netzwerklast erhöhen.
+ Außerdem würde das Ad-hoc-Broadcasting in vielen Fällen einfach nicht zuverlässig funktionieren,
+ da schläfrige Knoten über längere Zeiträume hinweg aufgrund der hohen Auslastung nicht erreichbar sind.
+In solchen Szenarien ist es vorteilhaft, die Erkennung auf andere (nicht eingeschränkte) Netzwerk-Hosts zu verlagern.
+Werkzeuge: git, make, RIOT, aiocoap
+
+
+(a) Richten Sie ein CoRE Resource Directory (RD) auf dem Raspberry Pi ein (siehe aiocoap-Dokumentation).
+
+
+
+
+
+
+(b) Verwenden Sie die Beispiel-Firmware examples/cord ep, um einen IoT-Knoten im RD zu registrieren.
+
+
+
+
+(c) Verwenden Sie auf einem Linux-Rechner (z. B. dem Raspi) den aiocoap-client,
+um die IoT-Knoten, die im RD registriert sind, manuell zu ermitteln und dann auf ihre Ressourcen zuzugreifen.
+
+
+
+
+2. Machen Sie Ihre eigene Firmware auffindbar
+Integrieren Sie die zuvor erlernten RD-Funktionen in Ihre benutzerdefinierte Firmware-Anwendung, damit
+damit andere Hosts das RD abfragen und Ihren Knoten entdecken können.
+Werkzeuge: git, make, RIOT, aiocoap
+
+
+(a) Integrieren Sie die CoRE RD Registrierungsfunktionalität in Ihre eigene Firmware.
+
+
+
+
+(b) Diskutieren Sie mögliche Lösungen, damit der IoT-Knoten den RD automatisch findet.
+
+
+
+i. Implementieren Sie einen solchen Mechanismus, so dass Ihr IoT-Knoten die IP des RDs nicht vorher kennen muss.
+
+
+
+(c) Implementieren Sie ein Client-Programm in Python, das den RD abfragt, um IoT-Knoten zu finden.
+
+
+i. Fügen Sie eine Funktion hinzu, die automatisch alle Sensoren jedes gefundenen Geräts ausliest.
+
+
+
+
+3. Geräteübergreifende IoT-Anwendung
+Nun, da wir eine Reihe von IoT-Knoten haben,
+die automatisch entdeckt werden können und Daten von physischen Sensoren liefern,
+wollen wir eine Anwendung erstellen, die mehrere Geräte kombiniert,
+um eine übergeordnete Anwendung mit mehreren Geräten zu implementieren.
+Werkzeuge: python
+
+(a) Erweitern Sie Ihre python-Anwendung.
+
+
+
+i. Finde anhand der Sensorwerte heraus, ob der IoT-Knoten nach oben oder unten zeigt.
+
+
+
+ii. Wenn mindestens ein Knoten nach unten zeigt, sollte die Anwendung alle LEDs aller Knoten ausschalten.

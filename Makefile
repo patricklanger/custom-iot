@@ -38,6 +38,9 @@ USEMODULE += shell
 USEMODULE += shell_commands
 USEMODULE += ps
 
+### Um alle verfuegbaren Sensoren einzubeziehen und automatisch zu initialisieren
+USEMODULE += saul_default
+
 # Comment this out to disable code in RIOT that does safety checking
 # which is not needed in a production environment but helps in the
 # development process:
@@ -79,3 +82,9 @@ ifndef CONFIG_KCONFIG_MODULE_GCOAP
 GCOAP_RESEND_BUFS_MAX ?= 2
 CFLAGS += -DCONFIG_GCOAP_RESEND_BUFS_MAX=$(GCOAP_RESEND_BUFS_MAX)
 endif
+
+### Protokolldaten pufferung, Relevanz herausfinden
+CFLAGS += -DCONFIG_GCOAP_PDU_BUF_SIZE=1024
+##Channel?
+CFLAGS += -DCONFIG_IEEE802154_DEFAULT_CHANNEL=22
+CFLAGS += -DCONFIG_GNRC_IPV6_NIB_SLAAC=1
