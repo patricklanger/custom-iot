@@ -27,36 +27,6 @@ static gcoap_listener_t _listener = {
     NULL
 };
 
-
-void gcoap_saul_init(void) {
-    /* Coap Ressourcen fuer alle Saul Devices erstellen */
-    int n = 0;
-    for(saul_reg_t *reg = saul_reg_find_nth(0); n < GCOAP_SAUL_RES_MAX && reg != NULL; reg = saul_reg_find_nth(++n)) {
-        /* Pfad fuer Saul geraete generieren (In generate_path werden diese nach ID, reg in abgespeichert) */
-        generate_path(_paths[n], n, reg);
-
-        /* Erstellen von Coap-Ressourcen mit Saul-Device als Kontext */
-        //Fuer jedes Device werden die Methoden PUT und GET erstellt
-        //reg sind Devices aus der Registry
-        //In Path wird fuer jede ID in der reg den Pfad zur entsprechenden Device
-        _resources[n] = (coap_resource_t) {
-            .path = _paths[n],
-            .methods = COAP_GET | COAP_PUT,
-            .handler = saul_handler,
-            .context = reg
-        };
-    }
-
-    /* Coap resourcen muessen fuer gcoap_register_listerner sortiert werden */
-    qsort(_resources, n, sizeof(coap_resource_t), compare_path);
-
-    //Resourcen Menge ist nach for Schleife in n gespeichert und Resource_len bekommt n initialisiert
-    _listener.resources_len = n;
-
-    //Fuer Verwendung von gcoap Resourcen
-    gcoap_register_listener(&_listener);
-}
-
 //PDU = Protokolldateneinheit die zwischen Peer hin und her geschickt wird
 // beinhaltet Metadaten wie GET, PUT, ...
 
@@ -135,7 +105,7 @@ static ssize_t saul_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx
 //CGOAP_SAUL_PATHLEN = Maximale Anzahl der Bytes
 //"saul..." = Formatzeichenkette Saul Registry
 static inline void generate_path(char *buffer, int id, saul_reg_t *reg) {
-    snprintf(buffer, GCOAP_SAUL_PATHLEN, "/saul/%d-%s-%s",
+    snprintf(buffer, GCOAP_PATH_LEN, "/saul/%d-%s-%s",
              id,
              reg->name,
              saul_class_to_str(reg->driver->type));
@@ -144,4 +114,34 @@ static inline void generate_path(char *buffer, int id, saul_reg_t *reg) {
 //Vgerleicht Strings, Wenn ungleich (return <0 oder >0), wenn gleich (return 0) fur das sortieren
 static inline int compare_path(const void *a, const void *b) {
     return strcmp(((coap_resource_t*)a)->path, ((coap_resource_t*)b)->path);
+}
+
+
+void gcoap_saul_init(void) {
+    /* Coap Ressourcen fuer alle Saul Devices erstellen */
+    int n = 0;
+    for(saul_reg_t *reg = saul_reg_find_nth(0); n < GCOAP_RES_MAX && reg != NULL; reg = saul_reg_find_nth(++n)) {
+        /* Pfad fuer Saul geraete generieren (In generate_path werden diese nach ID, reg in abgespeichert) */
+        generate_path(_paths[n], n, reg);
+
+        /* Erstellen von Coap-Ressourcen mit Saul-Device als Kontext */
+        //Fuer jedes Device werden die Methoden PUT und GET erstellt
+        //reg sind Devices aus der Registry
+        //In Path wird fuer jede ID in der reg den Pfad zur entsprechenden Device
+        _resources[n] = (coap_resource_t) {
+            .path = _paths[n],
+            .methods = COAP_GET | COAP_PUT,
+            .handler = saul_handler,
+            .context = reg
+        };
+    }
+
+    /* Coap resourcen muessen fuer gcoap_register_listerner sortiert werden */
+    qsort(_resources, n, sizeof(coap_resource_t), compare_path);
+
+    //Resourcen Menge ist nach for Schleife in n gespeichert und Resource_len bekommt n initialisiert
+    _listener.resources_len = n;
+
+    //Fuer Verwendung von gcoap Resourcen
+    gcoap_register_listener(&_listener);
 }
