@@ -42,7 +42,7 @@ USEMODULE += ps
 USEMODULE += saul_default
 
 ### Fuer Resurce Directory ein Modul ###
-USEMODULE += cord_ep_standalone
+# USEMODULE += cord_ep_standalone
 
 
 
@@ -98,9 +98,9 @@ CFLAGS += -DCONFIG_GNRC_IPV6_NIB_SLAAC=1
 ###Fuer Resource Directory###
 # For debugging and demonstration purposes, we limit the lifetime to 60s
 # Set CONFIG_CORD_LT only if not being set via Kconfig
-ifndef CONFIG_CORD_LT
-#Lebensdauer
-CFLAGS += -DCONFIG_CORD_LT=60
-#Endpunktname des Knotens
-#CFLAGS += "-DCONFIG_CORD_EP=EP_Test_Name
-endif
+# ifndef CONFIG_CORD_LT
+# #Lebensdauer
+# CFLAGS += -DCONFIG_CORD_LT=60
+# #Endpunktname des Knotens
+# #CFLAGS += "-DCONFIG_CORD_EP=EP_Test_Name
+# endif
