@@ -9,9 +9,6 @@
 #include "saul.h"
 #include "saul_reg.h"
 
-#define GCOAP_RES_MAX 16
-#define GCOAP_PATH_LEN 32
-
 static coap_resource_t _resources[GCOAP_RES_MAX];
 
 static char _paths[GCOAP_RES_MAX][GCOAP_PATH_LEN];

@@ -25,6 +25,7 @@
 #include "shell.h"
 
 #include "gcoap_example.h"
+#include "gcoap_saul.h"
 
 #define MAIN_QUEUE_SIZE (4)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
@@ -40,6 +41,9 @@ int main(void)
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
     server_init();
     puts("gcoap example app");
+
+    gcoap_saul_init();
+    puts("gcoap_saul_init app");
 
     /* start shell */
     puts("All up, running the shell now");
