@@ -1,21 +1,7 @@
 /*
- * Copyright (c) 2015-2016 Ken Bannister. All rights reserved.
- *
- * This file is subject to the terms and conditions of the GNU Lesser
- * General Public License v2.1. See the file LICENSE in the top level
- * directory for more details.
- */
-
-/**
- * @ingroup     examples
- * @{
- *
- * @file
- * @brief       gcoap example
- *
- * @author      Ken Bannister <kb2ma@runbox.com>
- *
- * @}
+ * Aktueller Stand:
+ * 1. coap_saul funktioniert
+ * 2. cord_ep muss implementiert werden
  */
 
 #include <stdio.h>
@@ -35,6 +21,23 @@ static const shell_command_t shell_commands[] = {
     { NULL, NULL, NULL }
 };
 
+// TODO einbauen wird für cord_ep_standalone_reg_cb benötigt
+// /* we will use a custom event handler for dumping cord_ep events */
+// static void _on_ep_event(cord_ep_standalone_event_t event)
+// {
+//     switch (event) {
+//         case CORD_EP_REGISTERED:
+//             puts("RD endpoint event: now registered with a RD");
+//             break;
+//         case CORD_EP_DEREGISTERED:
+//             puts("RD endpoint event: dropped client registration");
+//             break;
+//         case CORD_EP_UPDATED:
+//             puts("RD endpoint event: successfully updated client registration");
+//             break;
+//     }
+// }
+
 int main(void)
 {
     /* for the thread running the shell */
@@ -44,6 +47,13 @@ int main(void)
 
     gcoap_saul_init();
     puts("gcoap_saul_init app");
+
+//TODO cord_ep ausführen
+    // /* register event callback with cord_ep_standalone */
+    // cord_ep_standalone_reg_cb(_on_ep_event);
+
+//TODO bei aiocoap-rd anmelden also nicht mehr über shell befehl sondern hierüber
+// RIOT-Shellbefehle findet man unter RIOT/sys/shell/commands
 
     /* start shell */
     puts("All up, running the shell now");
