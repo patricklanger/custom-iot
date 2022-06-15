@@ -86,7 +86,7 @@ static void register_on_rd(char *ip)
     // argv[3] = interface
     if (make_sock_ep(&remote, ip) < 0) {
         printf("error: unable to parse address\n");
-        return 1;
+        //return 1;
     }
     puts("Registering with RD now, this may take a short while...");
     // NULL weil wir kein registration interface angeben wollen sondern es
