@@ -2,6 +2,11 @@
  * Aktueller Stand:
  * 1. coap_saul funktioniert
  * 2. cord_ep ist implementiert werden. muss getestet werden (Aufgabe 2.a)
+ *    - Was haben wir gemacht am 15.07.?
+ *      - make_sock_ep hinzugefügt / kopiert aus sc_cord_ep.c
+ *      - im makefile cord_ep_standalone module hinzugefügt
+ *    - Zeigt keine Fehler mehr an.
+ *    - Funktion wurde noch nicht getestet.
  * 3. Aufgabe 2.b:
  *     Wie bekommen wir die Adresse des Pi automatisch?
  *     Jedem IoT Knoten im lowpan Netz des Pi wird die Routeradresse (ABRO) mitgeteilt.
@@ -31,6 +36,7 @@
 #include "net/nanocoap.h"
 #include "net/sock/util.h"
 
+// Was passiert hier? 
 static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
 {
     ep->port = 0;
