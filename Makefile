@@ -42,7 +42,7 @@ USEMODULE += ps
 USEMODULE += saul_default
 
 ### Fuer Resurce Directory ein Modul ###
-# USEMODULE += cord_ep_standalone
+USEMODULE += cord_ep_standalone
 
 
 
