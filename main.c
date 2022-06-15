@@ -22,6 +22,10 @@
 
 #include "net/cord/common.h"
 #include "net/cord/ep_standalone.h"
+#include "net/cord/config.h"
+#include "net/cord/lc.h"
+#include "net/cord/epsim.h"
+#include "net/cord/ep.h"
 
 #define MAIN_QUEUE_SIZE (4)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
