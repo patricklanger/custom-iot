@@ -24,8 +24,30 @@
 #include "net/cord/ep_standalone.h"
 #include "net/cord/config.h"
 // #include "net/cord/lc.h"
-#include "net/cord/epsim.h"
+// #include "net/cord/epsim.h"
 #include "net/cord/ep.h"
+
+#include "net/gnrc/netif.h"
+#include "net/nanocoap.h"
+#include "net/sock/util.h"
+
+static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
+{
+    ep->port = 0;
+    if (sock_udp_name2ep(ep, addr) < 0) {
+        return -1;
+    }
+    /* if netif not specified in addr */
+    if ((ep->netif == SOCK_ADDR_ANY_NETIF) && (gnrc_netif_numof() == 1)) {
+        /* assign the single interface found in gnrc_netif_numof() */
+        ep->netif = (uint16_t)gnrc_netif_iter(NULL)->pid;
+    }
+    ep->family  = AF_INET6;
+    if (ep->port == 0) {
+        ep->port = COAP_PORT;
+    }
+    return 0;
+}
 
 #define MAIN_QUEUE_SIZE (4)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
