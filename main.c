@@ -88,7 +88,7 @@ int main(void)
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
-    char* ip = "2001:67c:254:b0b2:affe:2000:0:1";
+    char* ip = "[2001:67c:254:b0b2:affe:2000:0:1]";
     register_on_rd(ip);
 
 //TODO bei aiocoap-rd anmelden also nicht mehr über shell befehl sondern hierüber
