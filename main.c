@@ -1,7 +1,7 @@
 /*
  * Aktueller Stand:
  * 1. coap_saul funktioniert
- * 2. cord_ep ist implementiert werden. muss getestet werden (Aufgabe 2.a)
+ * 2. cord_ep ist implementiert. muss getestet werden (Aufgabe 2.a)
  *    - Was haben wir gemacht am 15.07.?
  *      - make_sock_ep hinzugefügt / kopiert aus sc_cord_ep.c
  *      - im makefile cord_ep_standalone module hinzugefügt
@@ -9,9 +9,10 @@
  *    - Funktion wurde noch nicht getestet.
  * 3. Aufgabe 2.b:
  *     Wie bekommen wir die Adresse des Pi automatisch?
- *     Jedem IoT Knoten im lowpan Netz des Pi wird die Routeradresse (ABRO) mitgeteilt.
- *     irgendwie müssten wir auf diese zugreifen können.
- *     oder IP als environment variable übergeben?
+ *     1. Jedem IoT Knoten im lowpan Netz des Pi wird die Routeradresse (ABRO) mitgeteilt. -> Machen wir
+ *     2. Neighbour Discovery -> Machen wir nicht
+ *     - Implementiert mit gnrc_ipv6_nib_abr_t und mit gnrc_ipv6_nib_abr_print Liste Ausgeben lassen
+ *     - Wie speichern wir die IP in einer Variable jetzt? -> Ausprobieren
  * 4. Aufgabe 2.c:
  *     python... client: irgendwas damit?? https://aiocoap.readthedocs.io/en/latest/examples.html
  */
@@ -35,8 +36,9 @@
 #include "net/gnrc/netif.h"
 #include "net/nanocoap.h"
 #include "net/sock/util.h"
+#include "net/gnrc/ipv6/nib/abr.h"
 
-// Was passiert hier? 
+// Was passiert hier?
 static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
 {
     ep->port = 0;
@@ -120,6 +122,16 @@ int main(void)
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
+    void *state = NULL;
+    gnrc_ipv6_nib_abr_t abr;
+
+    puts("My border routers:");
+    while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
+      gnrc_ipv6_nib_abr_print(&abr);
+    }
+
+//[2001:67c:254:b0b2:affe:2000:0:1]
+//ip = &abr;
     char* ip = "[2001:67c:254:b0b2:affe:2000:0:1]";
     register_on_rd(ip);
 
@@ -130,6 +142,11 @@ int main(void)
     puts("All up, running the shell now");
     char line_buf[SHELL_DEFAULT_BUFSIZE];
     shell_run(shell_commands, line_buf, SHELL_DEFAULT_BUFSIZE);
+
+
+
+
+
 
     /* should never be reached */
     return 0;
