@@ -16,12 +16,32 @@ async def main():
 
     await asyncio.sleep(2)
 
-    payload = b"The quick brown fox jumps over the lazy dog.\n" * 30
-    request = Message(code=PUT, payload=payload, uri="coap://localhost/other/block")
+    payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
+    request = Message(code=GET, payload=payload, uri="coap://localhost/.well-known/core")
 
-    response = await context.request(request).response
+    try:
+        response = await context.request(request).response
+    except Exception as e:
+        print('Failed to fetch resource:')
+        print(e)
+    else:
+        print(f'Result: {response.code} \n {response.payload}')
 
-    print('Result: %s\n%r'%(response.code, response.payload))
+    # response sieht irgendwie so aus:
+    # {
+    #     name: "",
+    #     actions: {
+    #         link1: "/resources", <- Das wollen wir haben
+    #         link2: "/devices",
+    #         ...
+    #     }
+    # }
+    #
+    # Funktion um alle sensoren auszulesen:
+    # -> wir machen einen zweiten aufruf mit dem resources link und bekommen zugriff auf alle resources.
+    # -> Für jeden Sensor ein GET request machen und ergebnis printen.
+    # Funktion alle zwei sekunden wiederholen.. oder so
+    #
 
 if __name__ == "__main__":
     asyncio.run(main())
