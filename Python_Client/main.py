@@ -44,7 +44,7 @@ async def main():
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'Result: {response.code} \n {response.payload}')
+        # print(f'Result: {response.code} \n {response.payload}')
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
