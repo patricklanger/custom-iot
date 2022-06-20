@@ -50,7 +50,7 @@ async def main():
                     and 'riot/board' not in link:
                 await getSensorData(context, link)
 
-    context.shutdown()
+    await context.shutdown()
 
 
     # response sieht irgendwie so aus:
