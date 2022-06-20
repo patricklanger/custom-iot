@@ -15,6 +15,11 @@
  *     - Wie speichern wir die IP in einer Variable jetzt? -> Ausprobieren
  * 4. Aufgabe 2.c:
  *     python... client: irgendwas damit?? https://aiocoap.readthedocs.io/en/latest/examples.html
+ *     - Dummy client angelegt
+ *     Programm soll:
+ *     - Tri-axis Accelerometer auslesen, um zu erkennen wie rum das Gerät gehalten wird. Ausprobieren.
+ *     - LEDs ansteuern
+ * -
  */
 
 #include <stdio.h>
@@ -129,6 +134,8 @@ int main(void)
     while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
       gnrc_ipv6_nib_abr_print(&abr);
     }
+
+    printf("%s\n", state);
 
 //[2001:67c:254:b0b2:affe:2000:0:1]
 //ip = &abr;
