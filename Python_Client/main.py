@@ -14,7 +14,7 @@ async def getSensorData(context, link):
     res = response.payload.decode("UTF-8")
     print(type(res))
     print(res)
-    print(json.loads(res))
+    print(json.loads(res + ""))
     return json.loads(res)
 
 
