@@ -44,7 +44,7 @@
 
 
 // Was passiert hier?
-static int make_sock_ep(sock_udp_ep_t *ep, gnrc_ipv6_nib_abr_t *addr)
+static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
 {
     ep->port = 0;
     if (sock_udp_name2ep(ep, addr) < 0) {
@@ -97,6 +97,10 @@ static void register_on_rd(gnrc_ipv6_nib_abr_t *ip)
     // argv[1] = register
     // argv[2] = ip der Service Discovery (Pi) ist jetzt char *ip
     // argv[3] = interface
+    //ip ist gnrc_ipv6_nib_abr_t und muss in char*
+    //net/ipv6/adr.h da ist tostring
+
+
     if (make_sock_ep(&remote, ip) < 0) {
         printf("error: unable to parse address\n");
         //return 1;
@@ -121,7 +125,7 @@ static void auto_register(void){
    while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
      gnrc_ipv6_nib_abr_print(&abr);
    }
-   register_on_rd(&abr);
+   //register_on_rd(&abr);
  }
 
 int main(void)
@@ -144,6 +148,7 @@ int main(void)
     //char* ip = &abr;
     //char* ip = ;
     //register_on_rd(&abr);
+    register_on_rd("[2001:67c:254:b0b2:affe:2000:0:1]");
 
 //TODO bei aiocoap-rd anmelden also nicht mehr über shell befehl sondern hierüber
 // RIOT-Shellbefehle findet man unter RIOT/sys/shell/commands
