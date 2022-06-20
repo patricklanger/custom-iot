@@ -115,15 +115,15 @@ static void register_on_rd(char *ip)
     }
 }
 
-static void auto_register(void){
-  void *state = NULL;
-  gnrc_ipv6_nib_abr_t abr;
-
-  puts("My border routers:");
-  while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
-    gnrc_ipv6_nib_abr_print(&abr);
-  }
-}
+// static void auto_register(void){
+//   void *state = NULL;
+//   gnrc_ipv6_nib_abr_t abr;
+//
+//   puts("My border routers:");
+//   while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
+//     gnrc_ipv6_nib_abr_print(&abr);
+//   }
+// }
 
 int main(void)
 {
