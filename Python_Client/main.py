@@ -16,6 +16,7 @@ async def getRequest(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
+        print(response.payload)
         res = json.loads(response.payload.decode("UTF-8"))
         return res
 
@@ -34,31 +35,31 @@ async def main():
     resDevices = await getRequest(context, request)
     print(resDevices)
 
-
-    payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
-    request = Message(code=GET, uri="coap://localhost/resource-lookup/")
-
-    try:
-        response = await context.request(request).response
-    except Exception as e:
-        print('Failed to fetch resource:')
-        print(e)
-    else:
-        # print(f'Result: {response.code} \n {response.payload}')
-        resources = response.payload.decode('UTF-8')
-        resources = resources.replace("<", "").replace(">", "").split(",")
-        for link in resources:
-            if 'SENSE_COLOR' not in link \
-                    and 'SENSE_MAG' not in link \
-                    and 'SENSE_ACCEL' not in link\
-                    and 'cli/stats' not in link\
-                    and 'riot/board' not in link:
-                if 'SENSE_TEMP' in link:
-                    sensorName = link.split('-')[-1]
-                    print(sensorName)
-                    temp = await getRequest(context, link)
-                    if temp > 22:
-                        pass
+    #
+    # payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
+    # request = Message(code=GET, uri="coap://localhost/resource-lookup/")
+    #
+    # try:
+    #     response = await context.request(request).response
+    # except Exception as e:
+    #     print('Failed to fetch resource:')
+    #     print(e)
+    # else:
+    #     # print(f'Result: {response.code} \n {response.payload}')
+    #     resources = response.payload.decode('UTF-8')
+    #     resources = resources.replace("<", "").replace(">", "").split(",")
+    #     for link in resources:
+    #         if 'SENSE_COLOR' not in link \
+    #                 and 'SENSE_MAG' not in link \
+    #                 and 'SENSE_ACCEL' not in link\
+    #                 and 'cli/stats' not in link\
+    #                 and 'riot/board' not in link:
+    #             if 'SENSE_TEMP' in link:
+    #                 sensorName = link.split('-')[-1]
+    #                 print(sensorName)
+    #                 temp = await getRequest(context, link)
+    #                 if temp > 22:
+    #                     pass
 
     await context.shutdown()
 
