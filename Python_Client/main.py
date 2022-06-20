@@ -1,7 +1,7 @@
 import json
 import logging
 import asyncio
-import time
+import link_header
 
 from aiocoap import *
 
@@ -14,7 +14,7 @@ async def getSensorData(context, link):
     res = response.payload.decode("UTF-8")
     print(type(res))
     print(res)
-    print(json.loads(res + ""))
+    print(res.split(','))
     return json.loads(res)
 
 
@@ -28,7 +28,7 @@ async def main():
 
     await asyncio.sleep(2)
 
-    request = Message(code=GET, uri="coap://localhost/resource-lookup/")
+    request = Message(code=Code.GET, uri="coap://localhost/resource-lookup/")
 
     try:
         response = await context.request(request).response
