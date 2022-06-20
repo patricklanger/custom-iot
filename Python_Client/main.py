@@ -12,7 +12,7 @@ async def getSensorData(context, link):
     request = Message(code=Code.GET, uri=link)
     response = await context.request(request).response
     res = response.payload.decode("UTF-8")
-    return json.loads(res)
+    return json.loads('{"d":23.75,"u":"°C"}')
 
 
 async def main():
