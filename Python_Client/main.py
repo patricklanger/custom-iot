@@ -42,7 +42,7 @@ async def main():
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
-            getSensorData(context, link)
+            await getSensorData(context, link)
 
 
 
