@@ -1,6 +1,7 @@
 import json
 import logging
 import asyncio
+from datetime import time
 
 from aiocoap import *
 
@@ -42,6 +43,7 @@ async def main():
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
+            time.sleep(2)
             await getSensorData(context, link)
 
 
