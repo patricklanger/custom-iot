@@ -54,6 +54,7 @@ async def main():
                 if 'SENSE_TEMP' in link:
                     temp = await getSensorData(context, link)
                     if temp > 22:
+                        pass
 
 
     await context.shutdown()
