@@ -21,8 +21,14 @@
  */
 
 #include <stdio.h>
-#include <unistd.h>
 #include "msg.h"
+
+#ifdef __unix__
+# include <unistd.h>
+#elif defined _WIN32
+# include <windows.h>
+#define sleep(x) sleep(1000 * (x))
+#endif
 
 
 #include "net/gcoap.h"
