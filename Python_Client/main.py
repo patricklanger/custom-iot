@@ -19,6 +19,7 @@ async def getSensorData(context, link):
         print(e)
     else:
         res = response.payload.decode("UTF-8")
+        res = json.loads(res)
         print(f'{type(res)} {res}')
         return res
 
