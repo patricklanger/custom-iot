@@ -44,7 +44,8 @@ async def main():
         resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
             time.sleep(2)
-            await getSensorData(context, link)
+            if 'SENSE_COLOR' not in link:
+                await getSensorData(context, link)
 
 
 
