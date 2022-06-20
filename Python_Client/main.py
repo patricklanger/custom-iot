@@ -17,7 +17,7 @@ async def getSensorData(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'{sensorName} : {response.payload}')
+        print(f'{sensorName} : {response.payload.decode("UTF-8")}')
 
 
 async def main():
@@ -51,6 +51,7 @@ async def main():
                     and 'riot/board' not in link:
                 await getSensorData(context, link)
 
+    context.shutdown()
 
 
     # response sieht irgendwie so aus:
