@@ -137,7 +137,9 @@ int main(void)
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
-    sleep(5);
+    int result = gnrc_netif_ipv6_wait_for_global_address(NULL, 10000);
+    printf("result: %d\n", result);
+
     auto_register();
 
 
