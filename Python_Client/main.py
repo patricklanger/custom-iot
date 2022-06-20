@@ -8,9 +8,7 @@ from aiocoap import *
 logging.basicConfig(level=logging.INFO)
 
 
-async def getSensorData(context, link):
-    sensorName = link.split('-')[-1]
-    print(sensorName)
+async def getRequest(context, link):
     request = Message(code=GET, uri=link)
     try:
         response = await context.request(request).response
@@ -18,8 +16,8 @@ async def getSensorData(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
-        res = response.payload.decode("UTF-8")
-        print(f'{type(res)} {res}')
+        res = json.loads(response.payload.decode("UTF-8"))
+        return res
 
 
 async def main():
@@ -31,6 +29,11 @@ async def main():
     context = await Context.create_client_context()
 
     await asyncio.sleep(2)
+
+    request = Message(code=GET, uri="coap://localhost/endpoint-lookup/")
+    resDevices = getRequest(context, request)
+    print(resDevices)
+
 
     payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
     request = Message(code=GET, uri="coap://localhost/resource-lookup/")
@@ -50,7 +53,12 @@ async def main():
                     and 'SENSE_ACCEL' not in link\
                     and 'cli/stats' not in link\
                     and 'riot/board' not in link:
-                await getSensorData(context, link)
+                if 'SENSE_TEMP' in link:
+                    sensorName = link.split('-')[-1]
+                    print(sensorName)
+                    temp = await getRequest(context, link)
+                    if temp > 22:
+
 
     await context.shutdown()
 
