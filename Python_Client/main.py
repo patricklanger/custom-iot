@@ -43,7 +43,6 @@ async def main():
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
-            time.sleep(2)
             if 'SENSE_COLOR' not in link \
                     and 'SENSE_MAG' not in link \
                     and 'SENSE_ACCEL' not in link\
