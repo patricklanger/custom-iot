@@ -12,9 +12,6 @@ async def getSensorData(context, link):
     request = Message(code=Code.GET, uri=link)
     response = await context.request(request).response
     res = response.payload.decode("UTF-8").replace('\x00', '')
-    print(type(res))
-    print(res)
-    print(res.split(','))
     return json.loads(res)
 
 
@@ -45,9 +42,10 @@ async def main():
                     and 'SENSE_ACCEL' not in link\
                     and 'cli/stats' not in link\
                     and 'riot/board' not in link:
+                print(await getSensorData(context, link))
                 if 'SENSE_TEMP' in link:
                     temp = await getSensorData(context, link)
-                    print(temp)
+                    print(temp.d)
 
 
 
