@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO)
 
 async def getSensorData(context, link):
     sensorName = link.split('-')[-1]
+    print(sensorName)
     request = Message(code=GET, uri=link)
     try:
         response = await context.request(request).response
@@ -17,7 +18,7 @@ async def getSensorData(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'{sensorName} : {response.payload.decode("UTF-8")}')
+        print(f'{response.payload.decode("UTF-8")}')
 
 
 async def main():
