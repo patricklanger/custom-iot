@@ -42,6 +42,8 @@
 #include "net/nanocoap.h"
 #include "net/sock/util.h"
 #include "net/gnrc/ipv6/nib/abr.h"
+#include "net/gnrc/netif.h"
+
 
 // Was passiert hier?
 static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
