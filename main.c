@@ -116,7 +116,6 @@ static void register_on_rd(char *ip)
 static void auto_register(void){
   void *state = NULL;
   gnrc_ipv6_nib_abr_t abr;
-  sleep(5);
 
   puts("My border routers:");
   while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
@@ -138,6 +137,7 @@ int main(void)
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
+    sleep(5);
     auto_register();
 
 
