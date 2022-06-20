@@ -148,6 +148,18 @@ static void auto_register(void){
      gnrc_ipv6_nib_abr_print(&abr);
    }
    //register_on_rd(&abr);
+   char buffer[IPV6_ADDR_MAX_STR_LEN];
+    ipv6_addr_to_str(buffer, (ipv6_addr_t*) &abr.addr, IPV6_ADDR_MAX_STR_LEN);
+
+    char regif[IPV6_ADDR_MAX_STR_LEN + 2];
+
+    sprintf(regif, "[%s]", buffer);
+
+    puts("regif address:");
+    puts(regif);
+
+    register_on_rd(ip);
+
  }
 
 int main(void)
@@ -169,9 +181,9 @@ int main(void)
 
 //[2001:67c:254:b0b2:affe:2000:0:1]
     //char* ip = &abr;
-    char* ip = "[2001:67c:254:b0b2:affe:2000:0:1]";
+    // char* ip = "[2001:67c:254:b0b2:affe:2000:0:1]";
     //register_on_rd(&abr);
-    register_on_rd(ip);
+    // register_on_rd(ip);
 
 //TODO bei aiocoap-rd anmelden also nicht mehr über shell befehl sondern hierüber
 // RIOT-Shellbefehle findet man unter RIOT/sys/shell/commands
