@@ -1,7 +1,7 @@
 import json
 import logging
 import asyncio
-from datetime import time
+import time
 
 from aiocoap import *
 
