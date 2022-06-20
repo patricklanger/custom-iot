@@ -28,8 +28,8 @@
 #include "net/gcoap.h"
 #include "shell.h"
 
-#include "gcoap_example.h"
-#include "gcoap_saul.h"
+// #include "gcoap_example.h"
+// #include "gcoap_saul.h"
 
 #include "net/cord/common.h"
 #include "net/cord/ep_standalone.h"
@@ -135,11 +135,11 @@ int main(void)
     xtimer_sleep(2);
     /* for the thread running the shell */
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
-    server_init();
-    puts("gcoap example app");
+    // server_init();
+    // puts("gcoap example app");
 
-    gcoap_saul_init();
-    puts("gcoap_saul_init app");
+    // gcoap_saul_init();
+    // puts("gcoap_saul_init app");
 
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
