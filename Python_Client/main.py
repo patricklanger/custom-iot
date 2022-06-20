@@ -7,6 +7,18 @@ from aiocoap import *
 logging.basicConfig(level=logging.INFO)
 
 
+async def getSensorData(context, link):
+    print('GET: ', link)
+    request = Message(code=GET, uri=link)
+    try:
+        response = await context.request(request).response
+    except Exception as e:
+        print('Failed to fetch resource:')
+        print(e)
+    else:
+        print(f'Result: {response.code} \n {response.payload}')
+
+
 async def main():
     """Perform a single PUT request to localhost on the default port, URI
     "/other/block". The request is sent 2 seconds after initialization.
@@ -18,7 +30,7 @@ async def main():
     await asyncio.sleep(2)
 
     payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
-    request = Message(code=GET, payload=payload, uri="coap://localhost/resource-lookup/")
+    request = Message(code=GET, uri="coap://localhost/resource-lookup/")
 
     try:
         response = await context.request(request).response
@@ -30,7 +42,9 @@ async def main():
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
-            print(link)
+            getSensorData(context, link)
+
+
 
     # response sieht irgendwie so aus:
     # {
