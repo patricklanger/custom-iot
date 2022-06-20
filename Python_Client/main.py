@@ -9,20 +9,10 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def getSensorData(context, link):
-    sensorName = link.split('-')[-1]
-    print(sensorName)
-    request = Message(code=GET, uri=link)
-    try:
-        response = await context.request(request).response
-    except Exception as e:
-        print('Failed to fetch resource:')
-        print(e)
-    else:
-        res = response.payload.decode("UTF-8")
-        print(f'{type(res)} {res}')
-        res = json.loads(res)
-        print(f'{type(res)} {res}')
-        return res
+    request = Message(code=Code.GET, uri=link)
+    response = await context.request(request).response
+    res = response.payload.decode("UTF-8")
+    return json.loads(res)
 
 
 async def main():
@@ -35,7 +25,6 @@ async def main():
 
     await asyncio.sleep(2)
 
-    payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
     request = Message(code=GET, uri="coap://localhost/resource-lookup/")
 
     try:
@@ -55,11 +44,11 @@ async def main():
                     and 'riot/board' not in link:
                 if 'SENSE_TEMP' in link:
                     temp = await getSensorData(context, link)
-                    if temp > 22:
-                        pass
+                    print(temp)
 
 
-    await context.shutdown()
+
+    # await context.shutdown()
 
 
     # response sieht irgendwie so aus:
