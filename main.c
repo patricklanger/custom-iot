@@ -21,7 +21,9 @@
  */
 
 #include <stdio.h>
+#include <unistd.h>
 #include "msg.h"
+
 
 #include "net/gcoap.h"
 #include "shell.h"
