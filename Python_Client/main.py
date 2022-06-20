@@ -1,3 +1,4 @@
+import json
 import logging
 import asyncio
 
@@ -25,7 +26,7 @@ async def main():
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'Result: {response.code} \n {response.payload}')
+        print(f'Result: {response.code} \n {json.dumps(response.payload)}')
 
     # response sieht irgendwie so aus:
     # {
