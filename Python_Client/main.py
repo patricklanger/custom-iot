@@ -58,7 +58,7 @@ async def main():
                     print(sensorName)
                     temp = await getRequest(context, link)
                     if temp > 22:
-
+                        pass
 
     await context.shutdown()
 
