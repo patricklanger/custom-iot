@@ -44,7 +44,7 @@
 
 
 // Was passiert hier?
-static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
+static int make_sock_ep(sock_udp_ep_t *ep, gnrc_ipv6_nib_abr_t *addr)
 {
     ep->port = 0;
     if (sock_udp_name2ep(ep, addr) < 0) {
