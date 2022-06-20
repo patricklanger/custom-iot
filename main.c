@@ -135,7 +135,7 @@ int main(void)
       gnrc_ipv6_nib_abr_print(&abr);
     }
 
-    printf("%s\n", state);
+    puts(state);
 
 //[2001:67c:254:b0b2:affe:2000:0:1]
 //ip = &abr;
