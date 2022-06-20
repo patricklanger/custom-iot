@@ -27,8 +27,8 @@ async def main():
         print(e)
     else:
         print(f'Result: {response.code} \n {response.payload}')
-
-        resources = response.payload.replace("<", "").replace(">", "").split(",")
+        resources = response.payload.decode('UTF-8')
+        resources = resources.replace("<", "").replace(">", "").split(",")
         for link in resources:
             print(link)
 
