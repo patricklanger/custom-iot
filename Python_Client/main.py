@@ -31,7 +31,7 @@ async def main():
     await asyncio.sleep(2)
 
     request = Message(code=GET, uri="coap://localhost/endpoint-lookup/")
-    resDevices = getRequest(context, request)
+    resDevices = await getRequest(context, request)
     print(resDevices)
 
 
