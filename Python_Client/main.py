@@ -18,7 +18,8 @@ async def getSensorData(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'{response.payload.decode("UTF-8")}')
+        res = response.payload.decode("UTF-8")
+        print(f'{type(res)} {res}')
 
 
 async def main():
@@ -46,6 +47,7 @@ async def main():
         for link in resources:
             if 'SENSE_COLOR' not in link \
                     and 'SENSE_MAG' not in link \
+                    and 'SENSE_ACCEL' not in link\
                     and 'cli/stats' not in link\
                     and 'riot/board' not in link:
                 await getSensorData(context, link)
