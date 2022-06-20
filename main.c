@@ -1,17 +1,13 @@
 /*
  * Aktueller Stand:
- * 1. coap_saul funktioniert
- * 2. cord_ep ist implementiert. muss getestet werden (Aufgabe 2.a)
- *    - Was haben wir gemacht am 15.07.?
- *      - make_sock_ep hinzugefügt / kopiert aus sc_cord_ep.c
- *      - im makefile cord_ep_standalone module hinzugefügt
- *    - Zeigt keine Fehler mehr an.
- *    - Funktion wurde noch nicht getestet.
- * 3. Aufgabe 2.b:
+ * - coap_saul funktioniert.
+ * - cord_ep ist implementiert.
+ * - Aufgabe 2.b:
  *     Wie bekommen wir die Adresse des Pi automatisch?
  *     1. Jedem IoT Knoten im lowpan Netz des Pi wird die Routeradresse (ABRO) mitgeteilt. -> Machen wir
  *     2. Neighbour Discovery -> Machen wir nicht
  *     - Implementiert mit gnrc_ipv6_nib_abr_t und mit gnrc_ipv6_nib_abr_print Liste Ausgeben lassen
+ *   TODO -> FEHLER: State is unused ....
  *     - Wie speichern wir die IP in einer Variable jetzt? -> Ausprobieren
  * 4. Aufgabe 2.c:
  *     python... client: irgendwas damit?? https://aiocoap.readthedocs.io/en/latest/examples.html
@@ -19,7 +15,9 @@
  *     Programm soll:
  *     - Tri-axis Accelerometer auslesen, um zu erkennen wie rum das Gerät gehalten wird. Ausprobieren.
  *     - LEDs ansteuern
- * -
+ *   TODO -> bei GET coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/8-mma8x5x-SENSE_ACCEL
+ *            - *** RIOT kernel panic: Gerät stürzt ab...
+ *            - RD bemerkt nicht dass IoT devcie nicht mehr antwortet
  */
 
 #include <stdio.h>
@@ -41,7 +39,7 @@
 #include "net/gnrc/netif.h"
 #include "net/nanocoap.h"
 #include "net/sock/util.h"
-#include "net/gnrc/ipv6/nib/abr.h"
+#include "net/gnrc/ipv6/nib/abr.h""
 #include "net/gnrc/netif.h"
 
 

@@ -43,6 +43,7 @@ USEMODULE += saul_default
 
 ### Fuer Resurce Directory ein Modul ###
 USEMODULE += cord_ep_standalone
+USEMODULE += CONFIG_GNRC_IPV6_NIB_6LBR
 
 
 
