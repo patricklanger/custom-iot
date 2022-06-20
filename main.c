@@ -130,6 +130,7 @@ static void auto_register(void){
 
 int main(void)
 {
+    sleep(5);
     /* for the thread running the shell */
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
     server_init();
