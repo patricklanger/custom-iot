@@ -39,7 +39,7 @@
 #include "net/gnrc/netif.h"
 #include "net/nanocoap.h"
 #include "net/sock/util.h"
-#include "net/gnrc/ipv6/nib/abr.h""
+#include "net/gnrc/ipv6/nib/abr.h"
 #include "net/gnrc/netif.h"
 
 
@@ -113,15 +113,16 @@ static void register_on_rd(char *ip)
     }
 }
 
-// static void auto_register(void){
-//   void *state = NULL;
-//   gnrc_ipv6_nib_abr_t abr;
-//
-//   puts("My border routers:");
-//   while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
-//     gnrc_ipv6_nib_abr_print(&abr);
-//   }
-// }
+static void auto_register(void){
+   void *state = NULL;
+   gnrc_ipv6_nib_abr_t abr;
+
+   puts("My border routers:");
+   while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
+     gnrc_ipv6_nib_abr_print(&abr);
+   }
+   register_on_rd(&abr);
+ }
 
 int main(void)
 {
@@ -136,13 +137,13 @@ int main(void)
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
-    // TODO auto_register();
+    auto_register();
 
 
 //[2001:67c:254:b0b2:affe:2000:0:1]
-//ip = &abr;
-    char* ip = "[2001:67c:254:b0b2:affe:2000:0:1]";
-    register_on_rd(ip);
+    //char* ip = &abr;
+    //char* ip = ;
+    //register_on_rd(&abr);
 
 //TODO bei aiocoap-rd anmelden also nicht mehr über shell befehl sondern hierüber
 // RIOT-Shellbefehle findet man unter RIOT/sys/shell/commands
