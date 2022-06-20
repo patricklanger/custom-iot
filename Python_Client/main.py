@@ -18,7 +18,7 @@ async def getSensorData(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
-        res = json.loads(response.payload.decode("UTF-8"))
+        res = response.payload.decode("UTF-8")
         print(f'{type(res)} {res}')
         return res
 
