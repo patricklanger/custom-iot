@@ -46,7 +46,6 @@ async def main():
         for link in resources:
             if 'SENSE_COLOR' not in link \
                     and 'SENSE_MAG' not in link \
-                    and 'SENSE_ACCEL' not in link\
                     and 'cli/stats' not in link\
                     and 'riot/board' not in link:
                 await getSensorData(context, link)
