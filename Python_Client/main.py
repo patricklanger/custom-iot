@@ -18,7 +18,7 @@ async def main():
     await asyncio.sleep(2)
 
     payload = ""  # b"The quick brown fox jumps over the lazy dog.\n" * 30
-    request = Message(code=GET, payload=payload, uri="coap://localhost/.well-known/core")
+    request = Message(code=GET, payload=payload, uri="coap://localhost/resource-lookup/")
 
     try:
         response = await context.request(request).response
@@ -26,7 +26,7 @@ async def main():
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'Result: {response.code} \n {json.dumps(response.payload)}')
+        print(f'Result: {response.code} \n {response.payload}')
 
     # response sieht irgendwie so aus:
     # {
