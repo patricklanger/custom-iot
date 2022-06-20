@@ -43,10 +43,10 @@ USEMODULE += saul_default
 
 ### Fuer Resurce Directory ein Modul ###
 USEMODULE += cord_ep_standalone
-USEMODULE += gnrc_ipv6_nib_6lbr
-USEMODULE += gnrc_netif_bus
-USEMODULE += gnrc_ipv6_router_default
-USEMODULE += gnrc_sixlowpan_default
+# USEMODULE += gnrc_ipv6_nib_6lbr
+# USEMODULE += gnrc_netif_bus
+# USEMODULE += gnrc_ipv6_router_default
+# USEMODULE += gnrc_sixlowpan_default
 
 
 
