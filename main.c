@@ -42,7 +42,8 @@
 #include "net/nanocoap.h"
 #include "net/sock/util.h"
 #include "net/gnrc/ipv6/nib/abr.h"
-#include "net/gnrc/netif.h"
+
+#include "net/ipv6/addr.h"
 
 
 // Was passiert hier?
