@@ -67,10 +67,10 @@ static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
 #define MAIN_QUEUE_SIZE (4)
 static msg_t _main_msg_queue[MAIN_QUEUE_SIZE];
 
-static const shell_command_t shell_commands[] = {
-    { "coap", "CoAP example", gcoap_cli_cmd },
-    { NULL, NULL, NULL }
-};
+// static const shell_command_t shell_commands[] = {
+//     { "coap", "CoAP example", gcoap_cli_cmd },
+//     { NULL, NULL, NULL }
+// };
 
 // TODO einbauen wird für cord_ep_standalone_reg_cb benötigt
 /* we will use a custom event handler for dumping cord_ep events */
