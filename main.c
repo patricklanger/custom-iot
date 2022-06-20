@@ -22,13 +22,7 @@
 
 #include <stdio.h>
 #include "msg.h"
-
-#ifdef __unix__
-# include <unistd.h>
-#elif defined _WIN32
-# include <windows.h>
-#define sleep(x) sleep(1000 * (x))
-#endif
+#include "xtimer.h"
 
 
 #include "net/gcoap.h"
@@ -138,7 +132,7 @@ static void auto_register(void){
 
 int main(void)
 {
-    sleep(5);
+    xtimer_sleep(2);
     /* for the thread running the shell */
     msg_init_queue(_main_msg_queue, MAIN_QUEUE_SIZE);
     server_init();
