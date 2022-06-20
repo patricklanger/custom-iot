@@ -45,7 +45,7 @@ async def main():
                 print(await getSensorData(context, link))
                 if 'SENSE_TEMP' in link:
                     temp = await getSensorData(context, link)
-                    print(temp.d)
+                    print(temp['d'])
 
 
 
