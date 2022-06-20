@@ -20,30 +20,48 @@
  *            - RD bemerkt nicht dass IoT devcie nicht mehr antwortet
  */
 
+// #include <stdio.h>
+// #include "msg.h"
+// #include "xtimer.h"
+//
+//
+// #include "net/gcoap.h"
+// #include "shell.h"
+// #include "fmt.h"
+//
+// // #include "gcoap_example.h"
+// // #include "gcoap_saul.h"
+//
+// #include "net/cord/common.h"
+// #include "net/cord/ep_standalone.h"
+// #include "net/cord/config.h"
+// // #include "net/cord/lc.h"
+// // #include "net/cord/epsim.h"
+// #include "net/cord/ep.h"
+//
+// #include "net/gnrc/netif.h"
+// #include "net/nanocoap.h"
+// #include "net/sock/util.h"
+// #include "net/gnrc/ipv6/nib/abr.h"
+//
+// #include "net/ipv6/addr.h"
 #include <stdio.h>
-#include "msg.h"
-#include "xtimer.h"
 
-
-#include "net/gcoap.h"
 #include "shell.h"
-
-// #include "gcoap_example.h"
-// #include "gcoap_saul.h"
-
+#include "gcoap_example.h"
+#include "msg.h"
+#include "net/gcoap.h"
 #include "net/cord/common.h"
 #include "net/cord/ep_standalone.h"
+#include "fmt.h"
+#include "net/gnrc/ipv6/nib/abr.h"
 #include "net/cord/config.h"
-// #include "net/cord/lc.h"
-// #include "net/cord/epsim.h"
+#include "net/ipv6/addr.h"
 #include "net/cord/ep.h"
-
+#include "net/sock/util.h"
 #include "net/gnrc/netif.h"
 #include "net/nanocoap.h"
-#include "net/sock/util.h"
-#include "net/gnrc/ipv6/nib/abr.h"
-
-#include "net/ipv6/addr.h"
+#include "xtimer.h"
 
 
 // Was passiert hier?
