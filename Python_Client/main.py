@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 
 
 async def getSensorData(context, link):
-    print('GET: ', link)
+    sensorName = link.split('-')[-1]
     request = Message(code=GET, uri=link)
     try:
         response = await context.request(request).response
@@ -17,7 +17,7 @@ async def getSensorData(context, link):
         print('Failed to fetch resource:')
         print(e)
     else:
-        print(f'Result: {response.code} \n {response.payload}')
+        print(f'{sensorName} : {response.payload}')
 
 
 async def main():
