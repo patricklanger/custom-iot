@@ -116,7 +116,7 @@ static void register_on_rd(char *ip)
 static void auto_register(void){
   void *state = NULL;
   gnrc_ipv6_nib_abr_t abr;
-  sleep(2);
+  sleep(5);
 
   puts("My border routers:");
   while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
