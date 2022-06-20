@@ -87,7 +87,7 @@ static void _on_ep_event(cord_ep_standalone_event_t event)
     }
 }
 
-static void register_on_rd(char *ip)
+static void register_on_rd(gnrc_ipv6_nib_abr_t *ip)
 {
     // remote endpoint of the target Resource Directory (RD)
     sock_udp_ep_t remote;
