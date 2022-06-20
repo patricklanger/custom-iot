@@ -158,7 +158,7 @@ static void auto_register(void){
     puts("regif address:");
     puts(regif);
 
-    register_on_rd(ip);
+    register_on_rd(regif);
 
  }
 
