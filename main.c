@@ -29,8 +29,6 @@
 // #include "shell.h"
 // #include "fmt.h"
 //
-// // #include "gcoap_example.h"
-// // #include "gcoap_saul.h"
 //
 // #include "net/cord/common.h"
 // #include "net/cord/ep_standalone.h"
@@ -46,6 +44,9 @@
 //
 // #include "net/ipv6/addr.h"
 #include <stdio.h>
+
+#include "gcoap_example.h"
+#include "gcoap_saul.h"
 
 #include "shell.h"
 #include "gcoap_example.h"
