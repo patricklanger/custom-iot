@@ -135,14 +135,10 @@ int main(void)
     gcoap_saul_init();
     puts("gcoap_saul_init app");
 
-    // TODO cord_ep ausführen
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
-    int result = gnrc_netif_ipv6_wait_for_global_addr(NULL, 10000);
-    printf("result: %d\n", result);
-
-    auto_register();
+    // TODO auto_register();
 
 
 //[2001:67c:254:b0b2:affe:2000:0:1]
