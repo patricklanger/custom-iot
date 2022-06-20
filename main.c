@@ -113,6 +113,16 @@ static void register_on_rd(char *ip)
     }
 }
 
+static void auto_register(void){
+  void *state = NULL;
+  gnrc_ipv6_nib_abr_t abr;
+
+  puts("My border routers:");
+  while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
+    gnrc_ipv6_nib_abr_print(&abr);
+  }
+}
+
 int main(void)
 {
     /* for the thread running the shell */
@@ -127,16 +137,8 @@ int main(void)
     /* register event callback with cord_ep_standalone */
     cord_ep_standalone_reg_cb(_on_ep_event);
 
-    void *state = NULL;
-    gnrc_ipv6_nib_abr_t abr;
+    auto_register();
 
-    puts("My border routers:");
-    while (gnrc_ipv6_nib_abr_iter(&state, &abr)) {
-      gnrc_ipv6_nib_abr_print(&abr);
-    }
-
-    state="hallo";
-    printf(state);
 
 //[2001:67c:254:b0b2:affe:2000:0:1]
 //ip = &abr;
