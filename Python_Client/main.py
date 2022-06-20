@@ -11,7 +11,7 @@ logging.basicConfig(level=logging.INFO)
 async def getSensorData(context, link):
     request = Message(code=Code.GET, uri=link)
     response = await context.request(request).response
-    res = response.payload.decode("UTF-8")
+    res = response.payload.decode("UTF-8").replace('\x00', '')
     print(type(res))
     print(res)
     print(res.split(','))
