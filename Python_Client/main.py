@@ -28,6 +28,10 @@ async def main():
     else:
         print(f'Result: {response.code} \n {response.payload}')
 
+        resources = response.payload.replace("<", "").replace(">", "").split(",")
+        for link in resources:
+            print(link)
+
     # response sieht irgendwie so aus:
     # {
     #     name: "",
