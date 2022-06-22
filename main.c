@@ -64,7 +64,7 @@
 #include "net/nanocoap.h"
 #include "xtimer.h"
 
-#define DEVELHELP=1
+#define DEVELHELP 1
 
 // Was passiert hier?
 static int make_sock_ep(sock_udp_ep_t *ep, const char *addr)
