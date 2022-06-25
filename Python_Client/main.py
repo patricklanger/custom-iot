@@ -1,51 +1,97 @@
 import json
 import logging
 import asyncio
-import link_header
 
 from aiocoap import *
 
 logging.basicConfig(level=logging.INFO)
 
 
-async def getSensorData(context, link):
-    request = Message(code=Code.GET, uri=link)
+async def get_sensor_data(context, url):
+    request = Message(code=Code.GET, uri=url)
     response = await context.request(request).response
     res = response.payload.decode("UTF-8").replace('\x00', '')
     return json.loads(res)
 
 
-async def main():
-    """Perform a single PUT request to localhost on the default port, URI
-    "/other/block". The request is sent 2 seconds after initialization.
+async def switch_all_leds(context, led_urls, value):
+    """
+    value: 1: lampen an; 0: lampen aus
+    """
+    for url in led_urls:
+        # TODO Was muss in den payload?? Nur 1 oder 0
+        request = Message(code=Code.PUT, payload=value, uri=url)
+        response = await context.request(request).response
+        print(response)
+        # TODO Response verarbeiten: Failure catchen oder so?
 
-    The payload is bigger than 1kB, and thus sent as several blocks."""
 
-    context = await Context.create_client_context()
-
-    await asyncio.sleep(2)
-
+async def get_resources(context):
+    """
+    gibt alle Resources der Resource Directory zurück.
+    Wenn ein Fehler auftritt wird null zurückgegeben.
+    """
     request = Message(code=Code.GET, uri="coap://localhost/resource-lookup/")
 
     try:
+        # Alle resourcen alleer diveces abfragen
         response = await context.request(request).response
     except Exception as e:
         print('Failed to fetch resource:')
         print(e)
+        return []
     else:
+        # Antwort ausprinten und verarbeitbar machen, bestimmte zeichen löschen
         print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
-        for link in resources:
-            if 'SENSE_COLOR' not in link \
-                    and 'SENSE_MAG' not in link \
-                    and 'SENSE_ACCEL' not in link\
-                    and 'cli/stats' not in link\
-                    and 'riot/board' not in link:
-                print(await getSensorData(context, link))
-                if 'SENSE_TEMP' in link:
-                    temp = await getSensorData(context, link)
-                    print(temp['d'])
+        return resources
+
+
+async def main():
+    """Startet einen Loop um alle Lampen anzuschalten bzw. alles auszuschalten, sofern mindestens ein Device über
+    Kopf gehalten wird."""
+
+    context = await Context.create_client_context()
+
+    await asyncio.sleep(1)
+
+    while True:
+
+        await asyncio.sleep(1)
+
+        # Request um alle Resourcen abfragen zu können vorbereiten
+        resources = await get_resources(context)
+        accel_urls = [url for url in resources if "SENSE_ACCEL" in url]
+        led_urls = [url for url in resources if "LED" in url]
+
+        # über alle Sensoren iterieren und nach SENSE_ACCEL Sensoren suchen
+        #if any("SENSE_ACCEL" in url for url in resources):
+        for url in accel_urls:
+            all_dives_up = True
+            acc_list = await get_sensor_data(context, url)
+            # in 'd' ist das value des Sensors
+            print(acc_list['d'])
+
+            # Wenn index 2 im Acc_List < -0.5 ist, ist er über kopf
+            if acc_list['d'][2] < -0.5:
+                all_dives_up = False
+                await switch_all_leds(context, led_urls, 0)
+            if all_dives_up:
+                await switch_all_leds(context, led_urls, 1)
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
