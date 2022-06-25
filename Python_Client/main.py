@@ -23,7 +23,7 @@ async def switch_all_leds(context, led_urls, value):
         request = Message(code=Code.PUT, payload=value, uri=url)
         response = await context.request(request).response
         print(response)
-        # TODO Response verarbeiten: Failure catchen oder so?
+        # TODO Response verarbeiten: Failure catchen oder so?  
 
 
 async def get_resources(context):
