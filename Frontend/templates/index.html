@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/styles.css">
+</head>
+<body>
+<div class="wrapper">
+    <div class="top">
+        <div class="title"><h1>IoT Devices</h1></div>
+    </div>
+    {% for device in all_devices %}
+        <div class="content">
+            <div class="card">
+                <h2>{{ device["name"] }}</h2>
+                {% for attr in device["attributes"] %}
+                    <h4>{{attr.name}}</h4>
+                    <p>{{attr.d}} in {{attr.u}}</p>
+                {% endfor %}
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</body>
+<footer>
+    <p>Made with ♥️ in Hamburg.</p>
+</footer>
+</html>
