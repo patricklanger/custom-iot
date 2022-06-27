@@ -1,9 +1,14 @@
-from flask import Flask, render_template
-import requests
 import json
+import logging
+import asyncio
 
+from flask import Flask, render_template
+from aiocoap import *
 
+logging.basicConfig(level=logging.INFO)
 app = Flask(__name__)
+
+context = None
 
 device_object = [
     {
@@ -39,11 +44,35 @@ device_object = [
 ]
 
 
+async def get_resources():
+    """
+    gibt alle Resources der Resource Directory zurück.
+    Wenn ein Fehler auftritt wird null zurückgegeben.
+    """
+    request = Message(code=Code.GET, uri="coap://localhost/resource-lookup/")
+
+    try:
+        # Alle resourcen alleer diveces abfragen
+        response = await context.request(request).response
+    except Exception as e:
+        print('Failed to fetch resource:')
+        print(e)
+        return []
+    else:
+        # Antwort ausprinten und verarbeitbar machen, bestimmte zeichen löschen
+        # print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
+        resources = response.payload.decode('UTF-8')
+        resources = resources.replace("<", "").replace(">", "").split(",")
+        return resources
+
+
 @app.route('/')
 def get_device_dashboard():
     try:
         # TODO Device abfrage an aiocoap-rd.
         # TODO kann http-webserver mit coap auf aiocoap-rd zugreifen??
+        resources = await get_resources()
+        print(resources)
         res = device_object  # requests.get("https://api.npoint.io/4af156202f984d3464c3")
     except:
         return
@@ -52,17 +81,9 @@ def get_device_dashboard():
     # webseite rendern mit allen devices
     return render_template("index.html", all_devices=all_devices)
 
-# @app.route('/blog/<page>')
-# def get_blog_page(page):
-#     try:
-#         res =requests.get("https://api.npoint.io/4af156202f984d3464c3")
-#     except:
-#         return
-#     all_posts = json.loads(res.text)
-#     blog_page = next((blog_post for blog_post in all_posts if int(blog_post["id"]) == int(page)), None)
-#     print(blog_page)
-#     return render_template("post.html", blog_page=blog_page)
-
 
 if __name__ == "__main__":
+    context = await Context.create_client_context()
+    await asyncio.sleep(3)
+
     app.run(host='0.0.0.0')
