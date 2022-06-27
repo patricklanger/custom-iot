@@ -23,8 +23,8 @@ async def switch_all_leds(context, led_urls, value):
         url = url.replace("(", "%28").replace(")", "%29")
         print("#### switch_all_leds ####")
         print(url, value)
-        print(request)
         request = Message(code=Code.PUT, payload=value, uri=url)
+        print(request)
         response = await context.request(request).response
         print(response)
         # TODO Response verarbeiten: Failure catchen oder so?  
