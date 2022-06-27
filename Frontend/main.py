@@ -129,13 +129,14 @@ async def index():
         }
     ]
     for url in resource_urls:
-        sensor_object = await get_sensor_data(context, url)
-        print(sensor_object)
-        obj = {}
-        obj["name"] = url.split('-')[-1]
-        obj["d"] = sensor_object["d"]
-        obj["u"] = sensor_object["u"]
-        data_object[0]["attributes"].append(obj)
+        if "cli/stats" not in url and "riot/board" not in url:
+            sensor_object = await get_sensor_data(context, url)
+            print(sensor_object)
+            obj = {}
+            obj["name"] = url.split('-')[-1]
+            obj["d"] = sensor_object["d"]
+            obj["u"] = sensor_object["u"]
+            data_object[0]["attributes"].append(obj)
     print(data_object)
     # alle dives als josn objekte
     # webseite rendern mit allen devices
