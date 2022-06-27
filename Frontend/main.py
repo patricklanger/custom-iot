@@ -122,13 +122,21 @@ async def index():
     context = await Context.create_client_context()
     await asyncio.sleep(3)
     resource_urls = await get_resources(context)
-    data_object = [{}]
+    data_object = [
+        {
+            "name": "device_1",
+            "attributes": [],
+        }
+    ]
     for url in resource_urls:
         sensor_object = await get_sensor_data(context, url)
         print(sensor_object)
-        data_object[0]["name"] = url.split('-')[-1]
-        data_object[0]["d"] = sensor_object["d"]
-        data_object[0]["u"] = sensor_object["u"]
+        obj = {}
+        obj["name"] = url.split('-')[-1]
+        obj["d"] = sensor_object["d"]
+        obj["u"] = sensor_object["u"]
+        data_object[0]["attributes"].append(obj)
+    print(data_object)
     # alle dives als josn objekte
     # webseite rendern mit allen devices
     return await render_template('index.html', all_devices=data_object)
