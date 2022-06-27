@@ -18,15 +18,12 @@ async def switch_all_leds(context, led_urls, value):
     """
     value: 1: lampen an; 0: lampen aus
     """
+    print("switch_all_leds : ", value)
     for url in led_urls:
         # TODO Was muss in den payload?? Nur 1 oder 0
         url = url.replace("(", "%28").replace(")", "%29")
-        print("#### switch_all_leds ####")
-        print(url, value)
         request = Message(code=Code.PUT, payload=str.encode(str(value)), uri=url)
-        print(request)
         response = await context.request(request).response
-        print(response)
         # TODO Response verarbeiten: Failure catchen oder so?  
 
 
@@ -46,7 +43,7 @@ async def get_resources(context):
         return []
     else:
         # Antwort ausprinten und verarbeitbar machen, bestimmte zeichen löschen
-        print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
+        # print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         return resources
