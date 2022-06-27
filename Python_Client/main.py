@@ -19,11 +19,12 @@ async def switch_all_leds(context, led_urls, value):
     value: 1: lampen an; 0: lampen aus
     """
     for url in led_urls:
+        print("switch_leds ", led_urls.index(url), " to ", value)
         # TODO Was muss in den payload?? Nur 1 oder 0
-        request = Message(code=Code.PUT, payload=value, uri=url)
-        response = await context.request(request).response
-        print(response)
-        # TODO Response verarbeiten: Failure catchen oder so?
+        url = url.replace("(", "%28").replace(")", "%29")
+        request = Message(code=Code.PUT, payload=str.encode(str(value)), uri=url)
+        await context.request(request).response
+        # TODO Response verarbeiten: Failure catchen oder so?  
 
 
 async def get_resources(context):
@@ -42,7 +43,7 @@ async def get_resources(context):
         return []
     else:
         # Antwort ausprinten und verarbeitbar machen, bestimmte zeichen löschen
-        print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
+        # print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
         resources = response.payload.decode('UTF-8')
         resources = resources.replace("<", "").replace(">", "").split(",")
         return resources
@@ -54,11 +55,9 @@ async def main():
 
     context = await Context.create_client_context()
 
-    await asyncio.sleep(1)
+    await asyncio.sleep(3)
 
     while True:
-
-        await asyncio.sleep(1)
 
         # Request um alle Resourcen abfragen zu können vorbereiten
         resources = await get_resources(context)
@@ -67,18 +66,21 @@ async def main():
 
         # über alle Sensoren iterieren und nach SENSE_ACCEL Sensoren suchen
         #if any("SENSE_ACCEL" in url for url in resources):
+        all_dives_up = True
         for url in accel_urls:
-            all_dives_up = True
+            print("check ACCL url: ", accel_urls.index(url))
             acc_list = await get_sensor_data(context, url)
             # in 'd' ist das value des Sensors
-            print(acc_list['d'])
 
             # Wenn index 2 im Acc_List < -0.5 ist, ist er über kopf
             if acc_list['d'][2] < -0.5:
                 all_dives_up = False
                 await switch_all_leds(context, led_urls, 0)
+            print("all_dives_up: ", all_dives_up)
             if all_dives_up:
                 await switch_all_leds(context, led_urls, 1)
+
+        await asyncio.sleep(2)
 
 
 
