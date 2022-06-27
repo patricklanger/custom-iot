@@ -82,8 +82,14 @@ async def get_device_dashboard():
     return render_template("index.html", all_devices=all_devices)
 
 
-if __name__ == "__main__":
+async def create_context():
+    global context
     context = await Context.create_client_context()
     await asyncio.sleep(3)
+
+
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(create_context())
 
     app.run(host='0.0.0.0')
