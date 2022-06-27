@@ -159,7 +159,7 @@ static void auto_register(void){
     puts("regif address:");
     puts(regif);
 
-    char * ip = [2001:67c:254:b0b2:affe:2000:0:1];
+    char * ip = "[2001:67c:254:b0b2:affe:2000:0:1]";
     register_on_rd(ip);//regif);
 
  }
