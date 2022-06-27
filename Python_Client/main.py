@@ -66,9 +66,9 @@ async def main():
 
         # über alle Sensoren iterieren und nach SENSE_ACCEL Sensoren suchen
         #if any("SENSE_ACCEL" in url for url in resources):
+        all_dives_up = True
         for url in accel_urls:
             print("check ACCL url: ", accel_urls.index(url))
-            all_dives_up = True
             acc_list = await get_sensor_data(context, url)
             # in 'd' ist das value des Sensors
 
