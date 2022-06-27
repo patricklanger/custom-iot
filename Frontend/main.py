@@ -126,6 +126,7 @@ async def index():
     for url in resource_urls:
         sensor_object = await get_sensor_data(context, url)
         print(url)
+        print(type(url))
         print(sensor_object)
         data_object[0].name = url.split('-')[-1]
         data_object[0].d = sensor_object.d
