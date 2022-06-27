@@ -67,7 +67,7 @@ async def get_resources():
 
 
 @app.route('/')
-def get_device_dashboard():
+async def get_device_dashboard():
     try:
         # TODO Device abfrage an aiocoap-rd.
         # TODO kann http-webserver mit coap auf aiocoap-rd zugreifen??
