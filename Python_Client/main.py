@@ -20,10 +20,11 @@ async def switch_all_leds(context, led_urls, value):
     """
     for url in led_urls:
         # TODO Was muss in den payload?? Nur 1 oder 0
-        request = Message(code=Code.PUT, payload=value, uri=url)
+        url = url.replace("(", "%28").replace(")", "%29")
         print("#### switch_all_leds ####")
-        print(led_urls, value)
+        print(url, value)
         print(request)
+        request = Message(code=Code.PUT, payload=value, uri=url)
         response = await context.request(request).response
         print(response)
         # TODO Response verarbeiten: Failure catchen oder so?  
