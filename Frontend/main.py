@@ -109,13 +109,28 @@ from aioflask import Flask, render_template
 
 app = Flask(__name__)
 
+
+async def get_sensor_data(context, url):
+    request = Message(code=Code.GET, uri=url)
+    response = await context.request(request).response
+    res = response.payload.decode("UTF-8").replace('\x00', '')
+    return json.loads(res)
+
+
 @app.route('/')
 async def index():
     context = await Context.create_client_context()
     await asyncio.sleep(3)
-    x = await get_resources(context)
-    print(x)
-    return await render_template('index.html')
+    resource_urls = await get_resources(context)
+    data_object = [{}]
+    for url in resource_urls:
+        sensor_object = await get_sensor_data(context, url)
+        data_object[0].name = url.split('-')[-1]
+        data_object[0].d = sensor_object.d
+        data_object[0].u = sensor_object.u
+    # alle dives als josn objekte
+    # webseite rendern mit allen devices
+    return await render_template('index.html', all_devices=data_object)
 
 
 app.run(host='0.0.0.0')
