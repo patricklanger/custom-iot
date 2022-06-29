@@ -27,9 +27,6 @@ DESCRIPTION = {
 	"@context": "https://www.w3.org/2022/wot/td/v1.1",
 	"title": "MyLampThing",
 	"description": "Valid TD copied from the spec's first example",
-	"security": [
-		"nosec"
-	],
 	"properties": {
 		"status": {
 			"type": "string",
