@@ -9,12 +9,15 @@ import json
 import logging
 import random
 
-import tornado.gen
-from tornado.ioloop import IOLoop, PeriodicCallback
+# import tornado.gen
+# from tornado.ioloop import IOLoop, PeriodicCallback
 
 from wotpy.protocols.http.server import HTTPServer
 from wotpy.protocols.ws.server import WebsocketServer
 from wotpy.wot.servient import Servient
+
+from aiocoap import *
+import asyncio
 
 CATALOGUE_PORT = 9090
 WEBSOCKET_PORT = 9393
@@ -22,7 +25,7 @@ HTTP_PORT = 9494
 
 GLOBAL_TEMPERATURE = None
 PERIODIC_MS = 3000
-DEFAULT_TEMP_THRESHOLD = 27.0
+DEFAULT_TEMP_THRESHOLD = "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/5-hdc1000-SENSE_TEMP"  # 27.0
 
 logging.basicConfig()
 LOGGER = logging.getLogger()
@@ -67,35 +70,34 @@ def update_temp():
     LOGGER.info("Current temperature: {}".format(GLOBAL_TEMPERATURE))
 
 
-@tornado.gen.coroutine
-def emit_temp_high(exp_thing):
+async def emit_temp_high(exp_thing, context):
     """Emits a 'Temperature High' event if the temperature is over the threshold.
     - der funktion wird das ExposedThing übergeben.
     - der wert NAME_PROP_TEMP_THRESHOLD wird aus dem Thing ausgelesen
     - anschließen verglichen ob Global Temp höher ist als die ausgelsene Temp aus dem device"""
 
     # vermutlich kann man so den link aus der description auslesen
-    temp_threshold = yield exp_thing.read_property(NAME_PROP_TEMP_THRESHOLD)
+    temp_threshold = await exp_thing.read_property(NAME_PROP_TEMP_THRESHOLD)
+    request = Message(code=Code.GET, uri=temp_threshold)
+    response = await context.request(request).response
+    res = response.payload.decode("UTF-8").replace('\x00', '')
+    LOGGER.info("Emitting high temperature event: {}".format(json.loads(res)))
 
-    if temp_threshold and GLOBAL_TEMPERATURE > temp_threshold:
-        LOGGER.info("Emitting high temperature event: {}".format(GLOBAL_TEMPERATURE))
-        # TODO Was ist dieses emit_event??
-        exp_thing.emit_event(NAME_EVENT_TEMP_HIGH, GLOBAL_TEMPERATURE)
+    # if temp_threshold and GLOBAL_TEMPERATURE > temp_threshold:
+    #     LOGGER.info("Emitting high temperature event: {}".format(GLOBAL_TEMPERATURE))
+    #     # TODO Was ist dieses emit_event??
+    #     exp_thing.emit_event(NAME_EVENT_TEMP_HIGH, GLOBAL_TEMPERATURE)
 
 
-@tornado.gen.coroutine
 def temp_read_handler():
     """Custom handler for the 'Temperature' property.
     ... vermutlich müsste hier der coap call zum device passieren um die temp abzufragen"""
 
     LOGGER.info("Doing some work to simulate temperature retrieval")
-    yield tornado.gen.sleep(random.random() * 3.0)
-
-    raise tornado.gen.Return(GLOBAL_TEMPERATURE)
 
 
-@tornado.gen.coroutine
-def main():
+
+async def main():
     update_temp()
 
     LOGGER.info("Creating WebSocket server on: {}".format(WEBSOCKET_PORT))
@@ -116,9 +118,12 @@ def main():
     LOGGER.info("Starting servient")
 
     # startet server und gibt wot object zurück
-    wot = yield servient.start()
+    wot = await servient.start()
 
     LOGGER.info("Exposing and configuring Thing")
+
+    context = await Context.create_client_context()
+    await asyncio.sleep(3)
 
     # macht aus der json-description ein ExposedThing-Object
     # an dem Objekt können diverse funktionalitäten des beschriebenen devies abgelesen/aufgerufen werden
@@ -127,23 +132,24 @@ def main():
     # read handler wird gesetzt um für bestimmte properties aktionen auszuführen. .. zB angefügte URL abfragen.. ? vermutlich
     exposed_thing.set_property_read_handler(NAME_PROP_TEMP, temp_read_handler)
     # in das property NAME_PROP_TEMP_THRESHOLD in der TD wird ein value eingetragen
-    yield exposed_thing.properties[NAME_PROP_TEMP_THRESHOLD].write(DEFAULT_TEMP_THRESHOLD)
+    await exposed_thing.properties[NAME_PROP_TEMP_THRESHOLD].write(DEFAULT_TEMP_THRESHOLD)
     # Thing wird anschließen benutzbar / interagierbar gemacht. .. vorher wurde es quasi initianlisiert
     exposed_thing.expose()
 
     # GLOBAL_TEMPERATURE wird alle drei sekunden mit neuen random werten gesetzt
-    periodic_update = PeriodicCallback(update_temp, PERIODIC_MS)
-    periodic_update.start()
+    # periodic_update = PeriodicCallback(update_temp, PERIODIC_MS)
+    # periodic_update.start()
 
-    @tornado.gen.coroutine
-    def emit_for_exposed_thing():
-        yield emit_temp_high(exposed_thing)
+    # async def emit_for_exposed_thing():
+    #     await emit_temp_high(exposed_thing, context)
+    #
+    # periodic_emit = PeriodicCallback(emit_for_exposed_thing, PERIODIC_MS)
+    # periodic_emit.start()
 
-    periodic_emit = PeriodicCallback(emit_for_exposed_thing, PERIODIC_MS)
-    periodic_emit.start()
+    await emit_temp_high(exposed_thing, context)
 
 
 if __name__ == "__main__":
     LOGGER.info("Starting loop")
-    IOLoop.current().add_callback(main)
-    IOLoop.current().start()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(main())
