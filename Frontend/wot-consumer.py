@@ -67,7 +67,7 @@ async def main():
     print(DESCRIPTION)
     print(json.dumps(DESCRIPTION))
     consumed_thing = wot.consume(json.dumps(DESCRIPTION))
-    val = await consumed_thing.read_property('status')
+    val = await consumed_thing.read_property('temperature')
 
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
 
