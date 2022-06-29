@@ -65,7 +65,7 @@ async def main():
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     print(consumed_thing.td.properties)
     # val = await consumed_thing.read_property('status')
-    val = coap.read_property(DESCRIPTION, 'status')
+    val = await coap.read_property(DESCRIPTION, 'status')
     print(val)
 
 
