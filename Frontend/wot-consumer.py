@@ -10,6 +10,7 @@ import argparse
 import asyncio
 import logging
 
+from wotpy.protocols.coap.client import CoAPClient
 from wotpy.wot.servient import Servient
 from wotpy.wot.wot import WoT
 
@@ -60,9 +61,11 @@ async def main():
 
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
 
+    coap = CoAPClient()
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     print(consumed_thing.td.properties)
-    val = await consumed_thing.read_property('status')
+    # val = await consumed_thing.read_property('status')
+    val = coap.read_property(DESCRIPTION, 'status')
     print(val)
 
 
