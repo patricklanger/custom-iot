@@ -27,7 +27,9 @@ DESCRIPTION = {
     "properties": {
         "status" : {
             "type": "string",
-            "forms": [{"href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"}]
+            "forms": [{"op": "readproperty",
+                     "contentType": "application/json",
+                       "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"}]
         }
     }
 }
