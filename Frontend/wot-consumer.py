@@ -26,8 +26,12 @@ DESCRIPTION = {
     "@context": "https://www.w3.org/2019/wot/td/v1",
     "id": "urn:dev:ops:32473-WoTLamp-1234",
     "title": "MyLampThing",
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in":"header"}
+    },
+    "security": ["basic_sc"],
     "properties": {
-        "status" : {
+        "status": {
             "type": "string",
             "forms": [{
                 "op": "readproperty",
