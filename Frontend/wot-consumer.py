@@ -64,6 +64,8 @@ async def main():
     """Subscribes to all events and properties on the remote Thing."""
 
     wot = WoT(servient=Servient())
+    print(DESCRIPTION)
+    print(json.dumps(DESCRIPTION))
     consumed_thing = wot.consume(json.dumps(DESCRIPTION))
 
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
@@ -71,12 +73,12 @@ async def main():
     coap = CoAPClient()
     td = ThingDescription(DESCRIPTION)
     print(td)
-    # print(td.to_dict())
+    print(td.to_dict())
     print(td.get_property_forms('status'))
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     # print(consumed_thing.td.properties)
-    # val = await consumed_thing.read_property('status')
-    val = await coap.read_property(td, 'temperature', timeout=2000)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
+    val = await consumed_thing.read_property('status')
+    # val = await coap.read_property(td, 'temperature', timeout=2000)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
     print(val)
 
 
