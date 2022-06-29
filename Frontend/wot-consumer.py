@@ -29,7 +29,7 @@ DESCRIPTION = {
 	"title": "MyLampThing",
 	"description": "Valid TD copied from the spec's first example",
 	"properties": {
-		"status": {
+		"temperature": {
 			"type": "string",
 			"forms": [
 				{
@@ -75,7 +75,7 @@ async def main():
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     # print(consumed_thing.td.properties)
     # val = await consumed_thing.read_property('status')
-    val = await coap.read_property(td, 'status', timeout=200)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
+    val = await coap.read_property(json.dumps(DESCRIPTION), 'temperature', timeout=2000)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
     print(val)
 
 
