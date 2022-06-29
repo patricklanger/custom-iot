@@ -29,12 +29,12 @@ DESCRIPTION = {
 	"description": "Valid TD copied from the spec's first example",
 	"securityDefinitions": {
 		"basic_sc": {
-			"scheme": "basic",
+			"scheme": "nosec",
 			"in": "header"
 		}
 	},
 	"security": [
-		"basic_sc"
+		"nosec"
 	],
 	"properties": {
 		"status": {
