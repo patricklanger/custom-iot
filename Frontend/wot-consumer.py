@@ -28,6 +28,7 @@ DESCRIPTION = {
     "title": "MyLampThing",
     "properties": {
         "status" : {
+            "name": "statusName",
             "type": "string",
             "forms": [{"op": "readproperty",
                      "contentType": "text/plain",
