@@ -61,7 +61,7 @@ static ssize_t saul_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx
             char valueBuf[20];
             phydat_to_json(&data, dim, valueBuf);
 
-            snprintf((char*)pdu->payload, len, "{\"value\": %s}", valueBuf);
+            resp_len += snprintf((char*)pdu->payload, len, "{\"value\": %s}", valueBuf);
             printf("%s\n", (char*)pdu->payload);
 
             return resp_len;
