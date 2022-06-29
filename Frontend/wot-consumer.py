@@ -9,6 +9,7 @@ subscribes to all observable properties and events in the consumed Thing.
 import argparse
 import asyncio
 import logging
+import json
 
 from wotpy.protocols.coap.client import CoAPClient
 from wotpy.wot.servient import Servient
@@ -61,7 +62,7 @@ async def main():
     """Subscribes to all events and properties on the remote Thing."""
 
     wot = WoT(servient=Servient())
-    consumed_thing = wot.consume(DESCRIPTION)
+    consumed_thing = wot.consume(json.dumps(DESCRIPTION))
 
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
 
