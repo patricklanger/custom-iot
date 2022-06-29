@@ -58,8 +58,8 @@ static ssize_t saul_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx
 
             /* write value to payload (json format) */
             //Speichern ergebnis in resp_len / wir wandeln fuer export in json um
-            resp_len += phydat_to_json(&data, dim, (char*)pdu->payload);
-
+            resp_len += snprintf((char*)pdu->payload, len, "{\"value\": 25}");
+            // resp_len += phydat_to_json(&data, dim, (char*)pdu->payload);
             return resp_len;
 
         case COAP_PUT:
