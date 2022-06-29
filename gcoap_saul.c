@@ -53,7 +53,7 @@ static ssize_t saul_handler(coap_pkt_t* pdu, uint8_t *buf, size_t len, void *ctx
             //finish, um PDU Metadaten zu vervollstaendigen
             //Zurueckgegebene Metadaten laenge in resp_len speichern
             gcoap_resp_init(pdu, buf, len, COAP_CODE_CONTENT);
-            coap_opt_add_format(pdu, COAP_FORMAT_JSON);
+            coap_opt_add_format(pdu, COAP_FORMAT_TEXT);
             size_t resp_len = coap_opt_finish(pdu, COAP_OPT_FINISH_PAYLOAD);
 
             /* write value to payload (json format) */
