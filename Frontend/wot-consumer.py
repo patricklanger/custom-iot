@@ -49,7 +49,7 @@ async def main():
 
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     val = consumed_thing.read_property('temperature')
-    print(val)
+    print("val")
 
 
 if __name__ == "__main__":
