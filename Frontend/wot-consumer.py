@@ -21,22 +21,51 @@ LOGGER.setLevel(logging.INFO)
 
 
 DESCRIPTION = {
-    "id": "urn:dev:wot:com:example:servient:lamp",
+    "@context": "https://www.w3.org/2019/wot/td/v1",
+    "id": "urn:dev:ops:32473-WoTLamp-1234",
     "title": "MyLampThing",
-    "description": "MyLampThing uses JSON-LD 1.1 serialization",
-    "security": [{"scheme": "nosec"}],
+    "securityDefinitions": {
+        "basic_sc": {"scheme": "basic", "in":"header"}
+    },
+    "security": ["basic_sc"],
     "properties": {
-        # Link zum device
-        "temperature": {
-            "description": "Shows the current status of the lamp",
+        "status" : {
             "type": "string",
-            "observable": True,
+            "forms": [{"href": "https://mylamp.example.com/status"}]
+        }
+    },
+    "actions": {
+        "toggle" : {
+            "forms": [{"href": "https://mylamp.example.com/toggle"}]
+        }
+    },
+    "events":{
+        "overheating":{
+            "data": {"type": "string"},
             "forms": [{
-                "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
+                "href": "https://mylamp.example.com/oh",
+                "subprotocol": "longpoll"
             }]
         }
     }
 }
+#     {
+#     "id": "urn:dev:wot:com:example:servient:lamp",
+#     "title": "MyLampThing",
+#     "description": "MyLampThing uses JSON-LD 1.1 serialization",
+#     "security": [{"scheme": "nosec"}],
+#     "properties": {
+#         # Link zum device
+#         "temperature": {
+#             "description": "Shows the current status of the lamp",
+#             "type": "string",
+#             "observable": True,
+#             "forms": [{
+#                 "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
+#             }]
+#         }
+#     }
+# }
 
 
 async def main():
