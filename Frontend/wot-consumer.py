@@ -24,22 +24,22 @@ LOGGER.setLevel(logging.INFO)
 
 
 DESCRIPTION = {
-	"id": "urn:simple",
-	"@context": "https://www.w3.org/2022/wot/td/v1.1",
-	"title": "MyLampThing",
-	"description": "Valid TD copied from the spec's first example",
-	"properties": {
-		"temperature": {
-			"type": "string",
-			"forms": [
-				{
-					"op": "readproperty",
-					"contentType": "text/plain",
-					"href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
-				}
-			]
-		}
-	}
+    "id": "urn:simple",
+    "@context": "https://www.w3.org/2022/wot/td/v1.1",
+    "title": "MyLampThing",
+    "description": "Valid TD copied from the spec's first example",
+    "properties": {
+        "temperature": {
+            "type": "string",
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "contentType": "text/plain",
+                    "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
+                }
+            ]
+        }
+    }
 }
 #     {
 #     "id": "urn:dev:wot:com:example:servient:lamp",
@@ -69,13 +69,14 @@ async def main():
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
 
     coap = CoAPClient()
-    td = ThingDescription(json.dumps(DESCRIPTION))
+    td = ThingDescription(DESCRIPTION)
+    print(td)
     # print(td.to_dict())
-    # print(td.get_property_forms('status'))
+    print(td.get_property_forms('status'))
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     # print(consumed_thing.td.properties)
     # val = await consumed_thing.read_property('status')
-    val = await coap.read_property(json.dumps(DESCRIPTION), 'temperature', timeout=2000)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
+    val = await coap.read_property(td, 'temperature', timeout=2000)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
     print(val)
 
 
