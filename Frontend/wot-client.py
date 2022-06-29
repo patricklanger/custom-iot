@@ -19,8 +19,6 @@ from wotpy.wot.servient import Servient
 from aiocoap import *
 import asyncio
 
-from wotpy.wot.td import ThingDescription
-
 CATALOGUE_PORT = 9090
 WEBSOCKET_PORT = 9393
 HTTP_PORT = 9494
@@ -168,9 +166,6 @@ async def main():
     await device_registration(context, exposed_thing)
     # Thing wird anschließen benutzbar / interagierbar gemacht. .. vorher wurde es quasi initianlisiert
     exposed_thing.expose()
-    td = ThingDescription(DESCRIPTION)
-    print(td.from_thing(exposed_thing))
-
 
     # GLOBAL_TEMPERATURE wird alle drei sekunden mit neuen random werten gesetzt
     # periodic_update = PeriodicCallback(update_temp, PERIODIC_MS)
@@ -182,7 +177,7 @@ async def main():
     # periodic_emit = PeriodicCallback(emit_for_exposed_thing, PERIODIC_MS)
     # periodic_emit.start()
 
-    # await emit_temp_high(exposed_thing, context)
+    await emit_temp_high(exposed_thing, context)
 
 
 if __name__ == "__main__":

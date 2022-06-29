@@ -63,14 +63,14 @@ async def main():
 
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
 
-    coap = CoAPClient()
-    td = ThingDescription(DESCRIPTION)
-    print(td.to_dict())
-    print(td.get_property_forms('status'))
+    # coap = CoAPClient()
+    # td = ThingDescription(DESCRIPTION)
+    # print(td.to_dict())
+    # print(td.get_property_forms('status'))
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
-    print(consumed_thing.td.properties)
-    # val = await consumed_thing.read_property('status')
-    val = await coap.read_property(DESCRIPTION, 'status')
+    # print(consumed_thing.td.properties)
+    val = await consumed_thing.read_property('status')
+    # val = await coap.read_property(DESCRIPTION, 'status')  # AttributeError: 'dict' object has no attribute 'get_property_forms'
     print(val)
 
 
