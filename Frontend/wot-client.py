@@ -33,29 +33,30 @@ LOGGER.setLevel(logging.INFO)
 
 ID_THING = "urn:temperaturething"
 NAME_PROP_TEMP = "temperature"
-NAME_PROP_TEMP_THRESHOLD = "high-temperature-threshold"
-NAME_EVENT_TEMP_HIGH = "high-temperature"
+NAME_PROP_HUM = "humidity"
+NAME_PROP_ACCL = "acceleration"
+NAME_PROP_COLOR = "color"
 
 DESCRIPTION = {
     "id": ID_THING,
     "name": ID_THING,
     "properties": {
+        # Link zum device
         NAME_PROP_TEMP: {
-            "type": "number",
-            "readOnly": True,
+            "type": "string",
             "observable": True
         },
-        # Link zum device
-        NAME_PROP_TEMP_THRESHOLD: {
-            "type": "number",
+        NAME_PROP_HUM: {
+            "type": "string",
             "observable": True
-        }
-    },
-    "events": {
-        NAME_EVENT_TEMP_HIGH: {
-            "data": {
-                "type": "number"
-            }
+        },
+        NAME_PROP_ACCL: {
+            "type": "string",
+            "observable": True
+        },
+        NAME_PROP_COLOR: {
+            "type": "string",
+            "observable": True
         }
     }
 }
@@ -77,7 +78,7 @@ async def emit_temp_high(exp_thing, context):
     - anschließen verglichen ob Global Temp höher ist als die ausgelsene Temp aus dem device"""
 
     # vermutlich kann man so den link aus der description auslesen
-    temp_threshold = await exp_thing.read_property(NAME_PROP_TEMP_THRESHOLD)
+    temp_threshold = await exp_thing.read_property(NAME_PROP_TEMP)
     request = Message(code=Code.GET, uri=temp_threshold)
     response = await context.request(request).response
     res = response.payload.decode("UTF-8").replace('\x00', '')
@@ -88,12 +89,40 @@ async def emit_temp_high(exp_thing, context):
     #     # TODO Was ist dieses emit_event??
     #     exp_thing.emit_event(NAME_EVENT_TEMP_HIGH, GLOBAL_TEMPERATURE)
 
+async def get_resources(ctx):
+    """
+    gibt alle Resources der Resource Directory zurück.
+    Wenn ein Fehler auftritt wird null zurückgegeben.
+    """
+    print("get_resources")
+    request = Message(code=Code.GET, uri="coap://localhost/resource-lookup/")
 
-def temp_read_handler():
-    """Custom handler for the 'Temperature' property.
-    ... vermutlich müsste hier der coap call zum device passieren um die temp abzufragen"""
+    try:
+        # Alle resourcen alleer diveces abfragen
+        print("get_resources 2")
+        response = await ctx.request(request).response
+    except Exception as e:
+        print('Failed to fetch resource:')
+        print(e)
+        return []
+    else:
+        # Antwort ausprinten und verarbeitbar machen, bestimmte zeichen löschen
+        # print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
+        resources = response.payload.decode('UTF-8')
+        resources = resources.replace("<", "").replace(">", "").split(",")
+        return resources
 
-    LOGGER.info("Doing some work to simulate temperature retrieval")
+
+async def device_registration(context, exp_thing):
+    for url in await get_resources(context):
+        if 'SENSE_TEMP' in url:
+            await exp_thing.properties[NAME_PROP_TEMP].write(url)
+        if 'SENSE_HUM' in url:
+            await exp_thing.properties[NAME_PROP_HUM].write(url)
+        if 'SENSE_ACCEL' in url:
+            await exp_thing.properties[NAME_PROP_ACCL].write(url)
+        if 'SENSE_COLOR' in url:
+            await exp_thing.properties[NAME_PROP_COLOR].write(url)
 
 
 
@@ -129,10 +158,7 @@ async def main():
     # an dem Objekt können diverse funktionalitäten des beschriebenen devies abgelesen/aufgerufen werden
     # u.a. die Interaktionsmöglichkeiten: Property(werte auslesen), action (lampe an machen), event (benachrichtigt werden, wenn ...)
     exposed_thing = wot.produce(json.dumps(DESCRIPTION))
-    # read handler wird gesetzt um für bestimmte properties aktionen auszuführen. .. zB angefügte URL abfragen.. ? vermutlich
-    exposed_thing.set_property_read_handler(NAME_PROP_TEMP, temp_read_handler)
-    # in das property NAME_PROP_TEMP_THRESHOLD in der TD wird ein value eingetragen
-    await exposed_thing.properties[NAME_PROP_TEMP_THRESHOLD].write(DEFAULT_TEMP_THRESHOLD)
+    await device_registration(context, exposed_thing)
     # Thing wird anschließen benutzbar / interagierbar gemacht. .. vorher wurde es quasi initianlisiert
     exposed_thing.expose()
 
