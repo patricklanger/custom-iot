@@ -44,7 +44,12 @@ DESCRIPTION = {
         # Link zum device
         NAME_PROP_TEMP: {
             "type": "string",
-            "observable": True
+            "observable": True,
+            "link": {
+                "op": "readproperty",
+                "contentType": "application/json",
+                "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
+            },
         },
         NAME_PROP_HUM: {
             "type": "string",
