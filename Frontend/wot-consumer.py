@@ -75,7 +75,7 @@ async def main():
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
     # print(consumed_thing.td.properties)
     # val = await consumed_thing.read_property('status')
-    val = await coap.read_property(DESCRIPTION, 'status')  # AttributeError: 'dict' object has no attribute 'get_property_forms'
+    val = await coap.read_property(json.dumps(DESCRIPTION), 'status')  # AttributeError: 'dict' object has no attribute 'get_property_forms'
     print(val)
 
 
