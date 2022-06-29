@@ -23,22 +23,29 @@ LOGGER.setLevel(logging.INFO)
 
 
 DESCRIPTION = {
-    "@context": "https://www.w3.org/2019/wot/td/v1",
-    "id": "urn:dev:ops:32473-WoTLamp-1234",
-    "title": "MyLampThing",
-    "securityDefinitions": {
-        "basic_sc": {"scheme": "basic", "in":"header"}
-    },
-    "security": ["basic_sc"],
-    "properties": {
-        "status": {
-            "type": "string",
-            "forms": [{
-                "op": "readproperty",
-                "contentType": "text/plain",
-                "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"}]
-        }
-    }
+	"id": "urn:simple",
+	"@context": "https://www.w3.org/2022/wot/td/v1.1",
+	"title": "MyLampThing",
+	"description": "Valid TD copied from the spec's first example",
+	"securityDefinitions": {
+		"basic_sc": {
+			"scheme": "basic",
+			"in": "header"
+		}
+	},
+	"security": [
+		"basic_sc"
+	],
+	"properties": {
+		"status": {
+			"type": "string",
+			"forms": [
+				{
+					"href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
+				}
+			]
+		}
+	}
 }
 #     {
 #     "id": "urn:dev:wot:com:example:servient:lamp",
