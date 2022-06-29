@@ -1,5 +1,3 @@
-import wotpy
-
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
@@ -44,6 +42,7 @@ DESCRIPTION = {
             "readOnly": True,
             "observable": True
         },
+        # Link zum device
         NAME_PROP_TEMP_THRESHOLD: {
             "type": "number",
             "observable": True
@@ -62,6 +61,7 @@ DESCRIPTION = {
 def update_temp():
     """Updates the global temperature value."""
 
+    # globale Variable, die zufallszahlen generiert
     global GLOBAL_TEMPERATURE
     GLOBAL_TEMPERATURE = round(random.randint(20.0, 30.0) + random.random(), 2)
     LOGGER.info("Current temperature: {}".format(GLOBAL_TEMPERATURE))
@@ -69,18 +69,24 @@ def update_temp():
 
 @tornado.gen.coroutine
 def emit_temp_high(exp_thing):
-    """Emits a 'Temperature High' event if the temperature is over the threshold."""
+    """Emits a 'Temperature High' event if the temperature is over the threshold.
+    - der funktion wird das ExposedThing übergeben.
+    - der wert NAME_PROP_TEMP_THRESHOLD wird aus dem Thing ausgelesen
+    - anschließen verglichen ob Global Temp höher ist als die ausgelsene Temp aus dem device"""
 
+    # vermutlich kann man so den link aus der description auslesen
     temp_threshold = yield exp_thing.read_property(NAME_PROP_TEMP_THRESHOLD)
 
     if temp_threshold and GLOBAL_TEMPERATURE > temp_threshold:
         LOGGER.info("Emitting high temperature event: {}".format(GLOBAL_TEMPERATURE))
+        # TODO Was ist dieses emit_event??
         exp_thing.emit_event(NAME_EVENT_TEMP_HIGH, GLOBAL_TEMPERATURE)
 
 
 @tornado.gen.coroutine
 def temp_read_handler():
-    """Custom handler for the 'Temperature' property."""
+    """Custom handler for the 'Temperature' property.
+    ... vermutlich müsste hier der coap call zum device passieren um die temp abzufragen"""
 
     LOGGER.info("Doing some work to simulate temperature retrieval")
     yield tornado.gen.sleep(random.random() * 3.0)
@@ -102,21 +108,30 @@ def main():
 
     LOGGER.info("Creating servient with TD catalogue on: {}".format(CATALOGUE_PORT))
 
+    # Servient kann sowohl Client, als auch Server sein und man kann sich und reserviert Port fuer Katalog / TD
     servient = Servient(catalogue_port=CATALOGUE_PORT)
     servient.add_server(ws_server)
     servient.add_server(http_server)
 
     LOGGER.info("Starting servient")
 
+    # startet server und gibt wot object zurück
     wot = yield servient.start()
 
     LOGGER.info("Exposing and configuring Thing")
 
+    # macht aus der json-description ein ExposedThing-Object
+    # an dem Objekt können diverse funktionalitäten des beschriebenen devies abgelesen/aufgerufen werden
+    # u.a. die Interaktionsmöglichkeiten: Property(werte auslesen), action (lampe an machen), event (benachrichtigt werden, wenn ...)
     exposed_thing = wot.produce(json.dumps(DESCRIPTION))
+    # read handler wird gesetzt um für bestimmte properties aktionen auszuführen. .. zB angefügte URL abfragen.. ? vermutlich
     exposed_thing.set_property_read_handler(NAME_PROP_TEMP, temp_read_handler)
+    # in das property NAME_PROP_TEMP_THRESHOLD in der TD wird ein value eingetragen
     yield exposed_thing.properties[NAME_PROP_TEMP_THRESHOLD].write(DEFAULT_TEMP_THRESHOLD)
+    # Thing wird anschließen benutzbar / interagierbar gemacht. .. vorher wurde es quasi initianlisiert
     exposed_thing.expose()
 
+    # GLOBAL_TEMPERATURE wird alle drei sekunden mit neuen random werten gesetzt
     periodic_update = PeriodicCallback(update_temp, PERIODIC_MS)
     periodic_update.start()
 
