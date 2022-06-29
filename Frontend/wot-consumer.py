@@ -30,9 +30,11 @@ DESCRIPTION = {
         "status" : {
             "name": "statusName",
             "type": "string",
-            "forms": [{"op": "readproperty",
-                     "contentType": "text/plain",
-                       "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"}]
+            "forms": [{
+                "name": "URLName",
+                "op": "readproperty",
+                "contentType": "text/plain",
+                "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"}]
         }
     }
 }
