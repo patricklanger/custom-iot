@@ -41,43 +41,26 @@ DESCRIPTION = {
         }
     }
 }
-#     {
-#     "id": "urn:dev:wot:com:example:servient:lamp",
-#     "title": "MyLampThing",
-#     "description": "MyLampThing uses JSON-LD 1.1 serialization",
-#     "security": [{"scheme": "nosec"}],
-#     "properties": {
-#         # Link zum device
-#         "temperature": {
-#             "description": "Shows the current status of the lamp",
-#             "type": "string",
-#             "observable": True,
-#             "forms": [{
-#                 "href": "coap://[2001:67c:254:b0b2:affe:2896:134b:16e6]/saul/9-mpl3115a2-SENSE_TEMP"
-#             }]
-#         }
-#     }
-# }
 
 
 async def main():
     """Subscribes to all events and properties on the remote Thing."""
 
     wot = WoT(servient=Servient())
-    print(DESCRIPTION)
-    print(json.dumps(DESCRIPTION))
+    # print(DESCRIPTION)
+    # print(json.dumps(DESCRIPTION))
     consumed_thing = wot.consume(json.dumps(DESCRIPTION))
     val = await consumed_thing.read_property('temperature')
 
     # LOGGER.info("ConsumedThing: {}".format(consumed_thing))
 
-    coap = CoAPClient()
-    td = ThingDescription(DESCRIPTION)
+    # coap = CoAPClient()
+    # td = ThingDescription(DESCRIPTION)
     # print(td)
     # print(td.to_dict())
     # print(td.get_property_forms('status'))
     # val = wotpy.wot.consumed.interaction_map.ConsumedThingProperty(consumed_thing, 'temperature')
-    print(consumed_thing.td.properties)
+    # print(consumed_thing.td.properties)
     # val = await coap.read_property(td, 'temperature', timeout=2000)  # AttributeError: 'dict' object has no attribute 'get_property_forms'
     print(val)
 
