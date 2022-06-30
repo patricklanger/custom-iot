@@ -1,19 +1,19 @@
+from .tdgenerator import TDGenerator
+
 import json
-import logging
 import asyncio
-import threading
+import _thread as thread
 
 from aioflask import Flask, render_template
-from aiocoap import *
-#
-# logging.basicConfig(level=logging.INFO)
-#
-# print(f"In flask global level: {threading.current_thread().name}")
-# app = Flask(__name__)
-#
-# context = None
-#
-device_object = [
+from wotpy.wot.servient import Servient
+from wotpy.wot.wot import WoT
+
+
+app = Flask(__name__)
+
+THINGS = []  # hier speichern wir unsere -> consumed Things <-
+ATTRIBUTES = ["temperature", "humidity", "color"]
+DATA_OBJECTS = [  # Dummy Object. Nur damit wir nicht ganz ohne was starten. kann eigentlich ein [] sein.
     {
         "name": "device_1",
         "attributes": [
@@ -47,100 +47,56 @@ device_object = [
 ]
 
 
-async def get_resources(ctx):
+async def update_data_objects():
+    while True:
+        data_obj = []
+        # iteriere über alle consumed THINGS
+        for idx, thing in enumerate(THINGS):
+            data_obj.append({
+                "name": f"device_{idx}",  # TODO Thing ID auslesen?
+                "attributes": []
+            })
+            # lies und speicher alle Sensor Attribute dieses Things
+            for attr in ATTRIBUTES:
+                val = await thing.read_property(attr)
+                print(f"recived {attr}-value: {val}")
+                obj = {
+                    "name": attr,
+                    "d": val["d"],
+                    "u": val["u"]
+                }
+                data_obj[0]["attributes"].append(obj)
+        print("DATA_OBJECTS updated ####################")
+        print(data_obj)
+        print("#########################################")
+        # Sensordaten global hinterlegen um sie in der Indexmethode abrufen zu können
+        global DATA_OBJECTS
+        DATA_OBJECTS = data_obj
+        await asyncio.sleep(3)
+
+
+async def create_things():
     """
-    gibt alle Resources der Resource Directory zurück.
-    Wenn ein Fehler auftritt wird null zurückgegeben.
+    Hole alle TDs und erzeuge consumed things daraus.
     """
-    print("get_resources")
-    print(f"Inside flask function: {threading.current_thread().name}")
-    request = Message(code=Code.GET, uri="coap://localhost/resource-lookup/")
-
-    try:
-        # Alle resourcen alleer diveces abfragen
-        print("get_resources 2")
-        response = await ctx.request(request).response
-    except Exception as e:
-        print('Failed to fetch resource:')
-        print(e)
-        return []
-    else:
-        # Antwort ausprinten und verarbeitbar machen, bestimmte zeichen löschen
-        # print(f'Result: {response.code} \n {response.payload.decode("UTF-8")}')
-        resources = response.payload.decode('UTF-8')
-        resources = resources.replace("<", "").replace(">", "").split(",")
-        return resources
-#
-#
-# @app.route('/')
-# async def get_device_dashboard():
-#     print('get_device_dashboard')
-#     print(f"Inside flask function: {threading.current_thread().name}")
-#     try:
-#         # TODO Device abfrage an aiocoap-rd.
-#         # TODO kann http-webserver mit coap auf aiocoap-rd zugreifen??
-#         resources = await get_resources()
-#         print(resources)
-#         res = device_object  # requests.get("https://api.npoint.io/4af156202f984d3464c3")
-#     except Exception as e:
-#         print('Failed to fetch resource:')
-#         print(e)
-#         return ""
-#     # alle dives als josn objekte
-#     all_devices = res  # json.loads(res.text)
-#     # webseite rendern mit allen devices
-#     return render_template("index.html", all_devices=all_devices)
-#
-#
-# async def create_context():
-#     global context
-#     context = await Context.create_client_context()
-#     await asyncio.sleep(3)
-#
-#
-# if __name__ == "__main__":
-#     loop = asyncio.get_event_loop()
-#     loop.run_until_complete(create_context())
-#     app.run(host='0.0.0.0')
-#
-#
-import asyncio
-from aioflask import Flask, render_template
-
-app = Flask(__name__)
-
-
-async def get_sensor_data(context, url):
-    request = Message(code=Code.GET, uri=url)
-    response = await context.request(request).response
-    res = response.payload.decode("UTF-8").replace('\x00', '')
-    return json.loads(res)
+    wot = WoT(servient=Servient())
+    global THINGS
+    tdgen = TDGenerator()
+    for td in tdgen.get_thing_descriptions():
+        THINGS.append(wot.consume(json.dumps(td)))
 
 
 @app.route('/')
 async def index():
-    context = await Context.create_client_context()
-    await asyncio.sleep(3)
-    resource_urls = await get_resources(context)
-    data_object = [
-        {
-            "name": "device_1",
-            "attributes": [],
-        }
-    ]
-    for url in resource_urls:
-        if "cli/stats" not in url and "riot/board" not in url:
-            sensor_object = await get_sensor_data(context, url)
-            print(sensor_object)
-            obj = {}
-            obj["name"] = url.split('-')[-1]
-            obj["d"] = sensor_object["d"]
-            obj["u"] = sensor_object["u"]
-            data_object[0]["attributes"].append(obj)
-    print(data_object)
-    # alle dives als josn objekte
-    # webseite rendern mit allen devices
-    return await render_template('index.html', all_devices=data_object)
+    """
+    Returne die Indexseite und alle DATA_OBJECTS, also aufbereitete Sensorwerte.
+    """
+    return await render_template('index.html', all_devices=DATA_OBJECTS)
 
-
-app.run(host='0.0.0.0')
+# app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(create_things())
+    # TODO funktioniert das so? Neuer Thread läuft im hintergrund und updated alle 3 sek unser DATA_OBJECTS
+    thread.start_new_thread(update_data_objects, ())  # start_new_thread(function, (function_parameter1, function_parameter2))
+    app.run(host='0.0.0.0')
