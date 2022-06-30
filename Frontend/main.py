@@ -1,12 +1,12 @@
-from .tdgenerator import TDGenerator
-
 import json
 import asyncio
-import _thread as thread
+import threading
 
 from aioflask import Flask, render_template
 from wotpy.wot.servient import Servient
 from wotpy.wot.wot import WoT
+
+from tdgenerator import TDGenerator
 
 
 app = Flask(__name__)
@@ -75,6 +75,10 @@ async def update_data_objects():
         await asyncio.sleep(3)
 
 
+def loop_in_thread(loop):
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(update_data_objects())
+
 async def create_things():
     """
     Hole alle TDs und erzeuge consumed things daraus.
@@ -82,6 +86,7 @@ async def create_things():
     wot = WoT(servient=Servient())
     global THINGS
     tdgen = TDGenerator()
+    await tdgen.startup()
     for td in tdgen.get_thing_descriptions():
         THINGS.append(wot.consume(json.dumps(td)))
 
@@ -95,8 +100,12 @@ async def index():
 
 # app.run(host='0.0.0.0')
 if __name__ == "__main__":
+    # Things erzeugen
     loop = asyncio.get_event_loop()
     loop.run_until_complete(create_things())
-    # TODO funktioniert das so? Neuer Thread läuft im hintergrund und updated alle 3 sek unser DATA_OBJECTS
-    thread.start_new_thread(update_data_objects, ())  # start_new_thread(function, (function_parameter1, function_parameter2))
+    # Neuer Thread läuft im hintergrund und updated alle 3 sek unser DATA_OBJECTS
+    loop = asyncio.get_event_loop()
+    t = threading.Thread(target=loop_in_thread, args=(loop,))
+    t.start()
+    # HTTP Server starten
     app.run(host='0.0.0.0')

@@ -119,6 +119,9 @@ class TDGenerator:
     Erstellt für alle devices in der RD eine TD als dict.
     """
     def __init__(self):
+        self.td_list = []
+
+    async def startup(self):
         context = await Context.create_client_context()
         await asyncio.sleep(3)
 
