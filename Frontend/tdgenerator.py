@@ -25,8 +25,7 @@ DESCRIPTION = {
     "id": "urn:device",
     "@context": "https://www.w3.org/2022/wot/td/v1.1",
     "title": "IoT Device",
-    "description": "Valid TD copied from the spec's first example",
-    # TODO "base": "" <- Base url??
+    "description": "IoT Sensor Device that sense humidity, temperature and light color",
     "properties": {
         "temperature": {
             "type": "string",
@@ -34,7 +33,7 @@ DESCRIPTION = {
                 {
                     "op": "readproperty",
                     "contentType": "text/plain",
-                    "href": "/saul/9-mpl3115a2-SENSE_TEMP"
+                    "href": ""
                 }
             ]
         },
@@ -44,7 +43,7 @@ DESCRIPTION = {
                 {
                     "op": "readproperty",
                     "contentType": "text/plain",
-                    "href": "/saul/9-mpl3115a2-SENSE_TEMP"
+                    "href": ""
                 }
             ]
         },
@@ -54,7 +53,7 @@ DESCRIPTION = {
                 {
                     "op": "readproperty",
                     "contentType": "text/plain",
-                    "href": "/saul/9-mpl3115a2-SENSE_TEMP"
+                    "href": ""
                 }
             ]
         },
@@ -104,13 +103,13 @@ async def device_registration(context):
             devices.append(td)
     # füge den angelegten TDs die urls zu ihren resourcen zu.
     for url in resources:
-        td = [td for td in devices if td['id']][0]
+        td = [td for td in devices if td['id'] == url.split("/")[2]][0]
         if 'SENSE_TEMP' in url:
-            td["properties"]["temperature"] = url
+            td["properties"]["temperature"]["forms"]["href"] = url
         if 'SENSE_HUM' in url:
-            td["properties"]["humidity"] = url
+            td["properties"]["humidity"]["forms"]["href"] = url
         if 'SENSE_COLOR' in url:
-            td["properties"]["color"] = url
+            td["properties"]["color"]["forms"]["href"] = url
     return devices
 
 

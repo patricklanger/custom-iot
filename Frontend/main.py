@@ -59,13 +59,13 @@ async def update_data_objects():
             # lies und speicher alle Sensor Attribute dieses Things
             for attr in ATTRIBUTES:
                 val = await thing.read_property(attr)
-                print(f"recived {attr}-value: {val}")
+                # print(f"recived {attr}-value: {val}")
                 obj = {
                     "name": attr,
                     "d": val["d"],
                     "u": val["u"]
                 }
-                data_obj[0]["attributes"].append(obj)
+                data_obj[idx]["attributes"].append(obj)
         print("DATA_OBJECTS updated ####################")
         print(data_obj)
         print("#########################################")
@@ -78,6 +78,7 @@ async def update_data_objects():
 def loop_in_thread(loop):
     asyncio.set_event_loop(loop)
     loop.run_until_complete(update_data_objects())
+
 
 async def create_things():
     """
