@@ -111,12 +111,14 @@ async def device_registration(context):
     for url in resources:
         ip = url.split("/")[2].replace("[", "").replace("]", "")
         td = [td for td in td_list if td['id'] == ip][0]
-        if 'SENSE_TEMP' in url:
-            td["properties"]["temperature"]["forms"][0]["href"] = url
+        if 'hdc1000-SENSE_TEMP' in url:
+            td["properties"]["temperature_1"]["forms"][0]["href"] = url
+        if 'mpl3115a2-SENSE_TEMP' in url:
+            td["properties"]["temperature_2"]["forms"][0]["href"] = url
         if 'SENSE_HUM' in url:
             td["properties"]["humidity"]["forms"][0]["href"] = url
-        if 'SENSE_COLOR' in url:
-            td["properties"]["color"]["forms"][0]["href"] = url
+        if 'SENSE_PRESS' in url:
+            td["properties"]["pressure"]["forms"][0]["href"] = url
     return td_list
 
 

@@ -12,7 +12,7 @@ from tdgenerator import TDGenerator
 app = Flask(__name__)
 
 THINGS = []  # hier speichern wir unsere -> consumed Things <-
-ATTRIBUTES = ["temperature", "humidity"]  # , "color"]
+ATTRIBUTES = ["temperature_1", "temperature_2", "humidity", "pressure"]  # , "color"]
 DATA_OBJECTS = [  # Dummy Object. Nur damit wir nicht ganz ohne was starten. kann eigentlich ein [] sein.
     {
         "name": "device_1",
@@ -57,6 +57,7 @@ async def update_data_objects():
                 "attributes": []
             })
             # lies und speicher alle Sensor Attribute dieses Things
+            print(thing.properties)
             for attr in ATTRIBUTES:  # TODO for prop in thing.properties
                 val = await thing.read_property(attr)  # TODO prop
                 # print(f"recived {attr}-value: {val}")
