@@ -26,7 +26,17 @@ DESCRIPTION = {
     "title": "IoT Device",
     "description": "IoT Sensor Device that sense humidity, temperature and light color",
     "properties": {
-        "temperature": {
+        "temperature_1": {
+            "type": "string",
+            "forms": [
+                {
+                    "op": "readproperty",
+                    "contentType": "text/plain",
+                    "href": ""
+                }
+            ]
+        },
+        "temperature_2": {
             "type": "string",
             "forms": [
                 {
@@ -46,7 +56,7 @@ DESCRIPTION = {
                 }
             ]
         },
-        "color": {
+        "pressure": {
             "type": "string",
             "forms": [
                 {
