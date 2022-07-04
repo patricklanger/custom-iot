@@ -18,12 +18,22 @@ DATA_OBJECTS = [  # Dummy Object. Nur damit wir nicht ganz ohne was starten. kan
         "name": "device_1",
         "attributes": [
             {
-                "name": "temperature",
+                "name": "temperature_1",
                 "d": 23,  # digit / wert
                 "u": "°C"  # unit / maßeinheit
             },
             {
-                "name": "accelerometer",
+                "name": "temperature_2",
+                "d": [0.5, 0.7, -0.4],
+                "u": "g"
+            },
+            {
+                "name": "humidity",
+                "d": [0.5, 0.7, -0.4],
+                "u": "g"
+            },
+            {
+                "name": "pressure",
                 "d": [0.5, 0.7, -0.4],
                 "u": "g"
             }
@@ -33,13 +43,23 @@ DATA_OBJECTS = [  # Dummy Object. Nur damit wir nicht ganz ohne was starten. kan
         "name": "device_2",
         "attributes": [
             {
-                "name": "temperature",
-                "d": 24,  # digit / wert
+                "name": "temperature_1",
+                "d": 23,  # digit / wert
                 "u": "°C"  # unit / maßeinheit
             },
             {
-                "name": "accelerometer",
-                "d": [0.1, 0.2, -0.9],
+                "name": "temperature_2",
+                "d": [0.5, 0.7, -0.4],
+                "u": "g"
+            },
+            {
+                "name": "humidity",
+                "d": [0.5, 0.7, -0.4],
+                "u": "g"
+            },
+            {
+                "name": "pressure",
+                "d": [0.5, 0.7, -0.4],
                 "u": "g"
             }
         ]
