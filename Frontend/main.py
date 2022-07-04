@@ -66,13 +66,14 @@ async def update_data_objects():
                     "u": val["u"]
                 }
                 data_obj[idx]["attributes"].append(obj)
+                await asyncio.sleep(1)
         print("DATA_OBJECTS updated ####################")
         print(data_obj)
         print("#########################################")
         # Sensordaten global hinterlegen um sie in der Indexmethode abrufen zu können
         global DATA_OBJECTS
         DATA_OBJECTS = data_obj
-        await asyncio.sleep(3)
+        await asyncio.sleep(1)
 
 
 def loop_in_thread(loop):
