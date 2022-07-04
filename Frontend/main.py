@@ -12,7 +12,7 @@ from tdgenerator import TDGenerator
 app = Flask(__name__)
 
 THINGS = []  # hier speichern wir unsere -> consumed Things <-
-ATTRIBUTES = ["temperature", "humidity", "color"]
+ATTRIBUTES = ["temperature", "humidity"]  # , "color"]
 DATA_OBJECTS = [  # Dummy Object. Nur damit wir nicht ganz ohne was starten. kann eigentlich ein [] sein.
     {
         "name": "device_1",
