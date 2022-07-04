@@ -105,6 +105,7 @@ async def device_registration(context):
             # Thing Description fuegen wir in die Liste ein
             td_list.append(td)
     # füge den angelegten TDs die urls zu ihren resourcen zu.
+    print(td_list)
     for url in resources:
         td = [td for td in td_list if td['id'] == url.split("/")[2]][0]
         if 'SENSE_TEMP' in url:

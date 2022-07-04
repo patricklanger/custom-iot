@@ -53,15 +53,15 @@ async def update_data_objects():
         # iteriere über alle consumed THINGS
         for idx, thing in enumerate(THINGS):
             data_obj.append({
-                "name": f"device_{idx}",  # TODO Thing ID auslesen?
+                "name": f"device_{idx}",  # TODO Thing ID auslesen? thing.td["id"]
                 "attributes": []
             })
             # lies und speicher alle Sensor Attribute dieses Things
-            for attr in ATTRIBUTES:
-                val = await thing.read_property(attr)
+            for attr in ATTRIBUTES:  # TODO for prop in thing.properties
+                val = await thing.read_property(attr)  # TODO prop
                 # print(f"recived {attr}-value: {val}")
                 obj = {
-                    "name": attr,
+                    "name": attr,  # TODO prop
                     "d": val["d"],
                     "u": val["u"]
                 }
