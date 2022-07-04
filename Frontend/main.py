@@ -79,12 +79,12 @@ async def update_data_objects():
             })
             # lies und speicher alle Sensor Attribute dieses Things
             #ThingDescription.from_thing(thing.thing)
-            print(thing.td.properties)
-            for attr in ATTRIBUTES:  # TODO for prop in thing.properties
-                val = await thing.read_property(attr)  # TODO prop
+            # print(thing.td.properties)
+            for prop in thing.td.properties:  # TODO for prop in thing.properties
+                val = await thing.read_property(prop)  # TODO prop
                 # print(f"recived {attr}-value: {val}")
                 obj = {
-                    "name": attr,  # TODO prop
+                    "name": prop,  # TODO prop
                     "d": val["d"],
                     "u": val["u"]
                 }
