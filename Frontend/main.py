@@ -4,6 +4,7 @@ import threading
 
 from aioflask import Flask, render_template
 from wotpy.wot.servient import Servient
+from wotpy.wot.td import ThingDescription
 from wotpy.wot.wot import WoT
 
 from tdgenerator import TDGenerator
@@ -77,7 +78,8 @@ async def update_data_objects():
                 "attributes": []
             })
             # lies und speicher alle Sensor Attribute dieses Things
-            print(thing.properties)
+            #ThingDescription.from_thing(thing.thing)
+            print(thing.td)
             for attr in ATTRIBUTES:  # TODO for prop in thing.properties
                 val = await thing.read_property(attr)  # TODO prop
                 # print(f"recived {attr}-value: {val}")
