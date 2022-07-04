@@ -4,7 +4,6 @@ import threading
 
 from aioflask import Flask, render_template
 from wotpy.wot.servient import Servient
-from wotpy.wot.td import ThingDescription
 from wotpy.wot.wot import WoT
 
 from tdgenerator import TDGenerator
@@ -13,7 +12,6 @@ from tdgenerator import TDGenerator
 app = Flask(__name__)
 
 THINGS = []  # hier speichern wir unsere -> consumed Things <-
-ATTRIBUTES = ["temperature_1", "temperature_2", "humidity", "pressure"]  # , "color"]
 DATA_OBJECTS = [  # Dummy Object. Nur damit wir nicht ganz ohne was starten. kann eigentlich ein [] sein.
     {
         "name": "device_1",
@@ -74,17 +72,17 @@ async def update_data_objects():
         # iteriere über alle consumed THINGS
         for idx, thing in enumerate(THINGS):
             data_obj.append({
-                "name": f"device_{idx}",  # TODO Thing ID auslesen? thing.td["id"]
+                "name": f"device_{idx}",
                 "attributes": []
             })
             # lies und speicher alle Sensor Attribute dieses Things
             #ThingDescription.from_thing(thing.thing)
             # print(thing.td.properties)
-            for prop in thing.td.properties:  # TODO for prop in thing.properties
-                val = await thing.read_property(prop)  # TODO prop
+            for prop in thing.td.properties:
+                val = await thing.read_property(prop)
                 # print(f"recived {attr}-value: {val}")
                 obj = {
-                    "name": prop,  # TODO prop
+                    "name": prop,
                     "d": val["d"],
                     "u": val["u"]
                 }
@@ -123,7 +121,6 @@ async def index():
     """
     return await render_template('index.html', all_devices=DATA_OBJECTS)
 
-# app.run(host='0.0.0.0')
 if __name__ == "__main__":
     # Things erzeugen
     loop = asyncio.get_event_loop()
