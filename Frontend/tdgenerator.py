@@ -97,7 +97,7 @@ async def device_registration(context):
     # ... mehrere IPs kommen vor wenn es mehrere Things gibt.
     for url in resources:
         print(url)
-        ip = url.split("/")[2]
+        ip = url.split("/")[2].replace("[", "").replace("]", "")
         print(ip)
         if not [td for td in td_list if td['id'] == ip]:
             # Fuer jede neue IP wird neue DESCRIPTION erstellt (TD pro Device)
@@ -109,7 +109,8 @@ async def device_registration(context):
     # füge den angelegten TDs die urls zu ihren resourcen zu.
     print(td_list)
     for url in resources:
-        td = [td for td in td_list if td['id'] == url.split("/")[2]][0]
+        ip = url.split("/")[2].replace("[", "").replace("]", "")
+        td = [td for td in td_list if td['id'] == ip][0]
         if 'SENSE_TEMP' in url:
             td["properties"]["temperature"]["forms"][0]["href"] = url
         if 'SENSE_HUM' in url:
