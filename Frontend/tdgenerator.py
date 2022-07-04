@@ -96,8 +96,10 @@ async def device_registration(context):
     # für jede IP die in den Resourcen vorkommt lege eine TD an
     # ... mehrere IPs kommen vor wenn es mehrere Things gibt.
     for url in resources:
+        print(url)
         ip = url.split("/")[2]
-        if [td for td in td_list if td['id'] == ip]:
+        print(ip)
+        if not [td for td in td_list if td['id'] == ip]:
             # Fuer jede neue IP wird neue DESCRIPTION erstellt (TD pro Device)
             td = copy(DESCRIPTION)
             # die Id bekommt die IP
