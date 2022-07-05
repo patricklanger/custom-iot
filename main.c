@@ -195,11 +195,6 @@ int main(void)
     char line_buf[SHELL_DEFAULT_BUFSIZE];
     shell_run(shell_commands, line_buf, SHELL_DEFAULT_BUFSIZE);
 
-
-
-
-
-
     /* should never be reached */
     return 0;
 }
