@@ -1,4 +1,4 @@
-## Pricision Farming using IoT Nodes
+## Pricision Farming using IoT Nodes, RIOT and WoTPy
 ### A basic Web of Things Example
 
 This Project was creates in the Module "Advanced Internet/IoT Technologies" at HAW Hamburg. 
