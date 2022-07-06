@@ -20,11 +20,11 @@ You will find the project presentation [here](https://docs.google.com/presentati
 
 #### Setup your Raspberry Pi
 - Erzeugen eines LoWPAN interface:
-		`sudo iwpan phy phy0 set channel 0 22`
-		`sudo iwpan dev wpan0 set pan_id 0x23`
-		`sudo ip link add link wpan0 name lowpan0 type lowpan`
-		`sudo ip link set wpan0 up`
-		`sudo ip link set lowpan0 up`
+		`sudo iwpan phy phy0 set channel 0 22`<br>
+		`sudo iwpan dev wpan0 set pan_id 0x23`<br>
+		`sudo ip link add link wpan0 name lowpan0 type lowpan`<br>
+		`sudo ip link set wpan0 up`<br>
+		`sudo ip link set lowpan0 up`<br>
 - Config the router advertisement daemon: `sudo vim /etc/radvd.conf` [help](https://linux.die.net/man/5/radvd.conf)
     - define your abro address 
 - to run the service: `systemctl start radvd` 
