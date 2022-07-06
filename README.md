@@ -1,5 +1,5 @@
-## Pricision Farming using IoT Nodes, RIOT and WoTPy
-### A basic Web of Things Example
+## Pricision Farming Webinterface
+### A basic Web of Things Example using aioflask, RIOT and WoTPy
 
 This Project was creates in the Module "Advanced Internet/IoT Technologies" at HAW Hamburg. 
 It shows some basics in usage of a Thing Discription and how it could be used for Pricision Farming.
